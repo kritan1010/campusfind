@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { signOut } from "./actions";
+import { BoardHeader } from "@/components/board-header";
 import { ZoneList } from "@/components/zone-list";
 import { createClient } from "@/lib/supabase/server";
 
@@ -20,32 +20,19 @@ export default async function HomePage() {
 
   return (
     <main className="dashboard-shell">
-      <header className="topbar">
-        <Link href="/" className="wordmark" aria-label="CampusFind home">
-          Campus<span>Find</span>
-        </Link>
-        <div className="topbar-actions">
-          <Link className="text-link" href="/onboarding">
-            Edit profile
-          </Link>
-          <form action={signOut}>
-            <button className="text-button" type="submit">
-              Sign out
-            </button>
-          </form>
-        </div>
-      </header>
+      <BoardHeader />
 
       <section className="welcome-card">
         <div>
-          <p className="eyebrow">Community board · foundation live</p>
+          <p className="eyebrow">Community board · listings live</p>
           <h1>
             Welcome, <em>{profile?.display_name ?? "neighbour"}</em>.
           </h1>
           <p className="lede">
-            Your account is ready. Lost-and-found listings arrive in Phase 2;
-            for now, your campus map is pinned below.
+            The board is open. Browse recent reports or pin a lost or found item
+            while the trail is still fresh.
           </p>
+          <div className="home-actions"><Link className="primary-button" href="/listings">Browse reports</Link><Link className="secondary-button" href="/listings/new">Post an item</Link></div>
         </div>
         <div className="status-stamp" aria-label="Account verified">
           Email verified
@@ -58,7 +45,7 @@ export default async function HomePage() {
             <p className="eyebrow">Pinned places</p>
             <h2 id="zones-heading">Campus zones</h2>
           </div>
-          <span className="phase-label">Phase 1</span>
+          <span className="phase-label">Phase 2</span>
         </div>
         <ZoneList />
       </section>
