@@ -1,5 +1,12 @@
 # Context changelog
 
+## 2026-07-25 — Phase 3 matching and claims
+
+- Added automatic, mutually visible Lost/Found match suggestions and match dismissal.
+- Added private proof questions, claimant answer flow, and finder accept/reject review.
+- Added guarded Postgres functions so proof answers and claim decisions cannot be
+  forged through raw client-table writes.
+
 ## 2026-07-25 — Phase 2 listings
 
 - Added the listing schema, safe view, full-text index, image bucket, explicit

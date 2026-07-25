@@ -488,6 +488,14 @@ input::placeholder { color: #9a907c; }
 .case-description > p:nth-child(2) { font-family: var(--font-fraunces), Georgia, serif; font-size: clamp(1.4rem, 3vw, 2.2rem); line-height: 1.45; max-width: 42ch; white-space: pre-wrap; }
 .keyword-list { display: flex; flex-wrap: wrap; gap: .5rem; }
 .keyword-list span { background: #eee3c4; border: 1px solid var(--manila-dark); font-family: var(--font-jetbrains), monospace; font-size: .65rem; padding: .35rem .55rem; }
+.proof-editor { display: flex; flex-direction: column; gap: .75rem; }
+.proof-editor label { background: #f5edd7; padding: .8rem; }
+.claim-card, .match-card { background: #f5edd7; border: 1px solid var(--manila-dark); margin-top: 1.25rem; padding: 1.25rem; }
+.claim-answer { border-top: 1px dashed var(--manila-dark); margin-top: .9rem; padding-top: .7rem; }
+.claim-answer p { margin: .35rem 0 0; white-space: pre-wrap; }
+.claim-actions, .match-card > div:last-child { align-items: center; display: flex; gap: .7rem; margin-top: 1rem; }
+.claim-actions .primary-button { margin: 0; }
+.score-stamp { background: var(--found); color: white; font-family: var(--font-jetbrains), monospace; font-size: .68rem; padding: .35rem .5rem; }
 
 @media (max-width: 820px) {
   .auth-shell { grid-template-columns: 1fr; }

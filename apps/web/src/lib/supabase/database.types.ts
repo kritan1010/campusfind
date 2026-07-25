@@ -15,6 +15,7 @@ export type ListingStatus =
   | "return_pending"
   | "returned"
   | "closed";
+export type ClaimStatus = "pending" | "accepted" | "rejected";
 
 export type Database = {
   public: {
@@ -109,6 +110,30 @@ export type Database = {
         };
         Relationships: [];
       };
+      match_suggestions: {
+        Row: { id: string; lost_listing_id: string; found_listing_id: string; score: number; dismissed_by_lost_poster: boolean; dismissed_by_found_poster: boolean; created_at: string };
+        Insert: { id?: string; lost_listing_id: string; found_listing_id: string; score: number; dismissed_by_lost_poster?: boolean; dismissed_by_found_poster?: boolean; created_at?: string };
+        Update: { dismissed_by_lost_poster?: boolean; dismissed_by_found_poster?: boolean };
+        Relationships: [];
+      };
+      claims: {
+        Row: { id: string; listing_id: string; claimant_id: string; status: ClaimStatus; created_at: string; decided_at: string | null };
+        Insert: { id?: string; listing_id: string; claimant_id: string; status?: ClaimStatus; created_at?: string; decided_at?: string | null };
+        Update: { status?: ClaimStatus; decided_at?: string | null };
+        Relationships: [];
+      };
+      proof_questions: {
+        Row: { id: string; listing_id: string; question: string; position: number };
+        Insert: { id?: string; listing_id: string; question: string; position?: number };
+        Update: { question?: string; position?: number };
+        Relationships: [];
+      };
+      proof_answers: {
+        Row: { id: string; claim_id: string; proof_question_id: string; answer: string; created_at: string };
+        Insert: { id?: string; claim_id: string; proof_question_id: string; answer: string; created_at?: string };
+        Update: Record<string, never>;
+        Relationships: [];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
@@ -177,6 +202,19 @@ export type Database = {
         Args: { p_listing_id: string };
         Returns: { exact_lat: number | null; exact_lng: number | null }[];
       };
+      get_proof_questions_for_claim: {
+        Args: { p_listing_id: string };
+        Returns: { question_id: string; question: string; sort_position: number }[];
+      };
+      create_claim_with_answers: {
+        Args: { p_listing_id: string; p_answers: Json };
+        Returns: string;
+      };
+      decide_claim: {
+        Args: { p_claim_id: string; p_accept: boolean };
+        Returns: ClaimStatus;
+      };
+      dismiss_match: { Args: { p_match_id: string }; Returns: undefined; };
       request_college: {
         Args: { requested_name: string };
         Returns: string;
@@ -186,6 +224,7 @@ export type Database = {
       college_status: CollegeStatus;
       listing_kind: ListingKind;
       listing_status: ListingStatus;
+      claim_status: ClaimStatus;
     };
     CompositeTypes: Record<string, never>;
   };

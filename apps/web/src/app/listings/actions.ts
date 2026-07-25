@@ -63,3 +63,40 @@ export async function toggleIndependentPosts(formData: FormData) {
   if (error) throw new Error(error.message);
   revalidatePath("/listings");
 }
+
+export async function submitClaim(formData: FormData) {
+  const listingId = String(formData.get("listingId") ?? "");
+  if (!listingId) throw new Error("Listing ID is required.");
+  const answers = Array.from(formData.entries())
+    .filter(([key]) => key.startsWith("answer:"))
+    .map(([key, answer]) => ({ question_id: key.slice("answer:".length), answer: String(answer).trim() }));
+  if (!answers.length || answers.some((item) => !item.answer)) throw new Error("Answer every proof question.");
+  const { supabase } = await authenticatedClient();
+  const { error } = await supabase.rpc("create_claim_with_answers", { p_listing_id: listingId, p_answers: answers });
+  if (error) throw new Error(error.message);
+  revalidatePath(`/listings/${listingId}`);
+  redirect(`/listings/${listingId}?claim=submitted`);
+}
+
+export async function decideClaim(formData: FormData) {
+  const claimId = String(formData.get("claimId") ?? "");
+  const listingId = String(formData.get("listingId") ?? "");
+  const accept = formData.get("decision") === "accept";
+  if (!claimId || !listingId) throw new Error("Claim details are required.");
+  const { supabase } = await authenticatedClient();
+  const { error } = await supabase.rpc("decide_claim", { p_claim_id: claimId, p_accept: accept });
+  if (error) throw new Error(error.message);
+  revalidatePath(`/listings/${listingId}`);
+  revalidatePath(`/listings/${listingId}/claims`);
+}
+
+export async function dismissMatch(formData: FormData) {
+  const matchId = String(formData.get("matchId") ?? "");
+  const listingId = String(formData.get("listingId") ?? "");
+  const side = String(formData.get("side") ?? "");
+  if (!matchId || !listingId || !["lost", "found"].includes(side)) throw new Error("Match details are required.");
+  const { supabase } = await authenticatedClient();
+  const { error } = await supabase.rpc("dismiss_match", { p_match_id: matchId });
+  if (error) throw new Error(error.message);
+  revalidatePath(`/listings/${listingId}/matches`);
+}
