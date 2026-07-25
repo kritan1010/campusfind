@@ -222,6 +222,10 @@ export type Database = {
         Args: { requested_name: string };
         Returns: string;
       };
+      review_college: {
+        Args: { p_college_id: string; p_approve: boolean; p_publicly_discoverable?: boolean };
+        Returns: undefined;
+      };
     };
     Enums: {
       college_status: CollegeStatus;
