@@ -14,7 +14,9 @@ Create the hosted demo and admin users without sending email:
 ```bash
 SUPABASE_URL='https://YOUR_PROJECT.supabase.co' \
 SUPABASE_SERVICE_ROLE_KEY='YOUR_SERVICE_ROLE_KEY' \
+DEMO_USER_PASSWORD='choose-a-strong-demo-password' \
+ADMIN_USER_PASSWORD='choose-a-different-strong-admin-password' \
 node scripts/create-demo-users.mjs
 ```
 
-This creates confirmed users `demo@campusfind.test` and `admin@campusfind.test`; their initial passwords are in the script and must be changed before a public deployment. Enter either email plus its password on the web or mobile login screen to avoid consuming an email send. Never put the service-role key in browser or Expo public environment variables.
+This creates confirmed users `demo@campusfind.test` and `admin@campusfind.test`. Enter either email plus its chosen password on the web or mobile login screen to avoid consuming an email send. Never put the service-role key in browser or Expo public environment variables.

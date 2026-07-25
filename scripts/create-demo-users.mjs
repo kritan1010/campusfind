@@ -6,11 +6,14 @@ const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!url || !serviceRoleKey) {
   throw new Error("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY for this one-time admin task.");
 }
+if (!process.env.DEMO_USER_PASSWORD || !process.env.ADMIN_USER_PASSWORD) {
+  throw new Error("Set DEMO_USER_PASSWORD and ADMIN_USER_PASSWORD to strong, different values.");
+}
 
 const supabase = createClient(url, serviceRoleKey, { auth: { autoRefreshToken: false, persistSession: false } });
 const accounts = [
-  { email: "demo@campusfind.test", password: "CampusFindDemo!2026", admin: false, fullName: "CampusFind Demo" },
-  { email: "admin@campusfind.test", password: "CampusFindAdmin!2026", admin: true, fullName: "CampusFind Admin" },
+  { email: "demo@campusfind.test", password: process.env.DEMO_USER_PASSWORD, admin: false, fullName: "CampusFind Demo" },
+  { email: "admin@campusfind.test", password: process.env.ADMIN_USER_PASSWORD, admin: true, fullName: "CampusFind Admin" },
 ];
 
 for (const account of accounts) {
