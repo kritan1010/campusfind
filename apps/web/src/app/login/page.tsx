@@ -13,7 +13,7 @@ export default async function LoginPage({
     <AuthShell
       step="Ticket 01 · Identify"
       title={<>Find your way <em>back in.</em></>}
-      description="We’ll send a one-time code. No password to remember, and no student-only gatekeeping."
+      description="Use Google to sign in securely. No passwords or email codes to manage."
     >
       <LoginForm nextPath={getSafeNextPath(next)} />
     </AuthShell>
