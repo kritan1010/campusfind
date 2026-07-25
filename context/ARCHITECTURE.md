@@ -3,8 +3,8 @@
 ## Frontend
 
 - `apps/web/src/app` — Next.js App Router pages and server actions.
-- `apps/web/src/app/listings` — feed, new/edit/detail routes, preference toggle,
-  and close/delete server actions.
+- `apps/web/src/app/listings` — feed, new/edit/detail routes, match leads,
+  private claim flow, finder review, preference toggle, and lifecycle actions.
 - `apps/web/src/components` — auth/onboarding components plus the evidence-board
   header, listing form, and listing cards.
 - `apps/web/src/lib/listings` — listing constants, validation, keyword cleanup,
@@ -35,6 +35,9 @@ functions. The session-refresh boundary is `apps/web/src/proxy.ts`.
 
 ## Solver and matching
 
-No matching solver is implemented yet. Phase 3 will add `match_suggestions`,
-claims, proof questions/answers, and its scorer. It must reuse
-`public.can_view_listing`; suggestions must never cross a visibility boundary.
+`supabase/migrations/0004_phase_3_matching_claims.sql` adds the matching and
+claim tables. A listing-insert trigger scores opposite-kind open listings only
+when both posters can see each other. The score combines category, date, zone,
+colour, brand/model, and keyword overlap. Found-item claims flow through guarded
+functions: narrow question read, atomic claim/answer creation, and finder-only
+accept/reject decisions.

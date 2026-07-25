@@ -25,16 +25,19 @@ export function ListingForm({
   listing,
   existingImages = [],
   keywords = [],
+  proofQuestions = [],
 }: {
   zones: Zone[];
   listing?: ListingSeed;
   existingImages?: ExistingImage[];
   keywords?: string[];
+  proofQuestions?: string[];
 }) {
   const router = useRouter();
   const [supabase] = useState(createClient);
   const [kind, setKind] = useState<ListingKind>(listing?.kind ?? "lost");
   const [files, setFiles] = useState<File[]>([]);
+  const [questions, setQuestions] = useState<string[]>(proofQuestions.length ? proofQuestions : [""]);
   const [exactLat, setExactLat] = useState(listing?.exact_lat?.toString() ?? "");
   const [exactLng, setExactLng] = useState(listing?.exact_lng?.toString() ?? "");
   const [removedImageIds, setRemovedImageIds] = useState<string[]>([]);
@@ -171,6 +174,19 @@ export function ListingForm({
       if (attributeError) { setPending(false); return setError(attributeError.message); }
     }
 
+    if (kind === "found") {
+      const cleanedQuestions = questions.map((question) => question.trim()).filter(Boolean);
+      if (cleanedQuestions.length < 1 || cleanedQuestions.length > 5 || cleanedQuestions.some((question) => question.length < 5)) {
+        setPending(false); return setError("Found reports need 1–5 proof questions of at least five characters.");
+      }
+      const { error: questionDeleteError } = await supabase.from("proof_questions").delete().eq("listing_id", listingId);
+      if (questionDeleteError) { setPending(false); return setError(questionDeleteError.message); }
+      const { error: questionInsertError } = await supabase.from("proof_questions").insert(
+        cleanedQuestions.map((question, position) => ({ listing_id: listingId!, question, position })),
+      );
+      if (questionInsertError) { setPending(false); return setError(questionInsertError.message); }
+    }
+
     router.push(`/listings/${listingId}`);
     router.refresh();
   }
@@ -202,6 +218,7 @@ export function ListingForm({
           <label>Model <span>optional</span><input name="model" defaultValue={listing?.model ?? ""} /></label>
         </div>
         <label>Keywords <span>comma separated</span><input name="keywords" defaultValue={keywords.join(", ")} placeholder="casio, sticker, scratched" /></label>
+        {kind === "found" && <div className="proof-editor"><p className="privacy-callout"><strong>Private proof questions</strong><br />Only a claimant and you will use these during verification. Do not put answers in the question.</p>{questions.map((question, index) => <label key={index}>Question {index + 1}<input value={question} minLength={5} onChange={(event) => setQuestions((current) => current.map((item, itemIndex) => itemIndex === index ? event.target.value : item))} placeholder="What sticker or mark is on it?" />{questions.length > 1 && <button className="location-button" type="button" onClick={() => setQuestions((current) => current.filter((_, itemIndex) => itemIndex !== index))}>Remove</button>}</label>)}{questions.length < 5 && <button className="location-button" type="button" onClick={() => setQuestions((current) => [...current, ""])}>+ Add another proof question</button>}</div>}
       </fieldset>
 
       <fieldset className="form-section">

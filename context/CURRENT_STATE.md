@@ -17,10 +17,14 @@ Last updated: 2026-07-25
 - The web app reads both supported publishable-key environment variable names;
   `apps/web/.env.local` is intentionally untracked and must not be removed.
 
+- Phase 3: automatic match suggestions across mutual visibility boundaries,
+  private finder proof questions, claimant answer submission, and finder
+  accept/reject review. Acceptance changes a found listing to `claimed` and
+  rejects other pending claims.
+
 ## In progress
 
-- No product phase is actively in progress. Phase 3 (matching and claims) is the
-  next planned phase in `docs/phase3.md`.
+- No product phase is actively in progress. Phase 4 (communication) is next.
 
 ## Known risks and follow-ups
 
@@ -31,6 +35,9 @@ Last updated: 2026-07-25
   email delivery before deploying.
 - The private pin uses browser geolocation or manual coordinates; it intentionally
   avoids sending exact coordinates to a third-party map tile provider.
+- Match suggestions are generated on listing creation. Editing a listing does
+  not recompute existing suggestions; add a recompute workflow if listings become
+  highly editable or the volume grows.
 - The hosted Phase 1 schema existed before MCP migration history was inspected;
   Phase 2 is tracked remotely, while the local numbered migration remains the
   source of truth for clean environments.
