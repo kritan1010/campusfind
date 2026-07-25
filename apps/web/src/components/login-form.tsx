@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 export function LoginForm({ nextPath }: { nextPath: string }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -18,6 +19,16 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
     try {
       const normalizedEmail = normalizeEmail(email);
       setPending(true);
+      if (password) {
+        const { error: passwordError } = await createClient().auth.signInWithPassword({
+          email: normalizedEmail,
+          password,
+        });
+        if (passwordError) throw passwordError;
+        router.replace(nextPath);
+        router.refresh();
+        return;
+      }
       const { error: authError } = await createClient().auth.signInWithOtp({
         email: normalizedEmail,
         options: {
@@ -55,6 +66,16 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
         aria-invalid={Boolean(error)}
         autoFocus
       />
+      <label htmlFor="password">Password <span className="field-hint">(demo/admin only)</span></label>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autoComplete="current-password"
+        placeholder="Leave blank for a sign-in code"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+      />
       <p className="field-hint" id="email-hint">
         Any email works—an institutional address is not required.
       </p>
@@ -64,7 +85,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
         </p>
       )}
       <button className="primary-button" type="submit" disabled={pending}>
-        {pending ? "Sending code…" : "Email me a sign-in code"}
+        {pending ? "Signing in…" : password ? "Sign in with password" : "Email me a sign-in code"}
       </button>
     </form>
   );
