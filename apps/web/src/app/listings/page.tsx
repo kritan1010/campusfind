@@ -26,9 +26,10 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
   if (!user) redirect("/login");
 
   const [profileResult, zonesResult] = await Promise.all([
-    supabase.from("profiles").select("college_id, show_independent_posts").eq("id", user.id).single(),
+    supabase.from("profiles").select("college_id, show_independent_posts, onboarding_completed_at").eq("id", user.id).single(),
     supabase.from("campus_zones").select("id, name").order("name"),
   ]);
+  if (!profileResult.data?.onboarding_completed_at) redirect("/onboarding?next=/listings");
 
   let listingQuery = supabase
     .from("listings_public")

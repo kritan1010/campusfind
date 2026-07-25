@@ -461,6 +461,7 @@ input::placeholder { color: #9a907c; }
 .admin-list li { align-items: center; border-top: 1px dashed var(--manila-dark); display: flex; font-size: .85rem; gap: .7rem; justify-content: space-between; padding: .8rem 0; }
 .admin-list .secondary-button { min-height: 2.4rem; padding: .45rem .6rem; }
 .admin-list small { color: var(--found); font-family: var(--font-jetbrains), monospace; font-size: .67rem; text-transform: uppercase; }
+.admin-live { color: var(--found); font-family: var(--font-jetbrains), monospace; font-size: .75rem; text-transform: uppercase; }
 
 .form-page { max-width: 76rem; }
 .form-page-heading { margin: 0 0 3rem; max-width: 58rem; }

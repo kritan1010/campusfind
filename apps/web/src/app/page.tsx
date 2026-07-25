@@ -13,9 +13,10 @@ export default async function HomePage() {
   if (!user) redirect("/login");
 
   const [{ data: profile }, { data: zones }] = await Promise.all([
-    supabase.from("profiles").select("display_name, avatar_url, college_id, is_admin").eq("id", user.id).single(),
+    supabase.from("profiles").select("display_name, avatar_url, college_id, is_admin, onboarding_completed_at").eq("id", user.id).single(),
     supabase.from("campus_zones").select("id, name").order("name"),
   ]);
+  if (!profile?.onboarding_completed_at) redirect("/onboarding");
 
   return (
     <main className="dashboard-shell">
