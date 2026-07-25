@@ -1,5 +1,14 @@
 # Context changelog
 
+## 2026-07-25 — Final handoff: mobile, auth, and admin
+
+- Added the Expo mobile app, secure Supabase session adapter, mobile auth/feed,
+  and hosted `device_push_tokens` schema.
+- Added Magic Link callback handling and optional password sign-in for provisioned
+  demo/admin users. Documented production OTP, SMTP, Vercel, and demo setup.
+- Added a server-rendered zone list, route loading state, and protected `/admin`
+  college-management UI. Promoted `kritansingh1010@gmail.com` to hosted admin.
+
 ## 2026-07-25 — Phases 4 and 5 foundations
 
 - Added secure comments, member conversations/messages, notification triggers,

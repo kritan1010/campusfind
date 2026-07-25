@@ -22,28 +22,42 @@ Last updated: 2026-07-25
   accept/reject review. Acceptance changes a found listing to `claimed` and
   rejects other pending claims.
 
+- Phases 4 and 5 database foundations are live: comments, private
+  conversations/messages, notifications, blocks, handover confirmations,
+  reporting, moderation, college review helpers, and push-subscription storage.
+- Phase 6 ships an Expo mobile client in `apps/mobile` with secure session
+  persistence, OTP/password sign-in, a server-backed listing feed, and profile
+  sign-out. It needs a separate Expo build/release before it is user-facing.
+- `/admin` is a real server-authorized web route. The account
+  `kritansingh1010@gmail.com` is an admin in the hosted database. It can add or
+  approve Loyola Academy and review pending college requests.
+- The web dashboard now fetches campus zones server-side with the profile,
+  removing its former client-side post-hydration fetch. App Router route loading
+  feedback is in `apps/web/src/app/loading.tsx`.
+
 ## In progress
 
-- Phases 4 and 5 backend are live: comments, private conversations/messages,
-  notifications, blocks, handover confirmations, reporting, moderation, college
-  review helpers, and push-subscription persistence. The next UI pass should
-  expand inbox/admin screens and connect a VAPID sender.
+- A full inbox, message composer, moderation/report queues, and robust admin
+  controls still need production UI. `startConversation` currently redirects to
+  `/inbox/[id]`, which has not been implemented.
+- The evidence-board visual treatment is intentional but needs a wider product
+  design pass if it does not fit the desired CampusFind direction.
 
 ## Known risks and follow-ups
 
 - Complete an end-to-end hosted-auth walkthrough with three real accounts before
   a public launch. The database visibility matrix is covered by pgTAP, but SMTP,
   browser permissions, and real Storage uploads depend on hosted configuration.
-- Configure the production Supabase Auth Site URL/redirect allow-list and OTP
-  email delivery before deploying.
+- Hosted Supabase Auth must retain Site URL
+  `https://campus-find-main.vercel.app` and the `/login/verify` redirect URL.
+  The Magic Link template must use `{{ .Token }}` to match the OTP screen.
+- Default Supabase email delivery is capped. Configure Resend custom SMTP for
+  any multi-user demo; Resend's test sender can only be used for the owner email.
 - The private pin uses browser geolocation or manual coordinates; it intentionally
   avoids sending exact coordinates to a third-party map tile provider.
 - Match suggestions are generated on listing creation. Editing a listing does
   not recompute existing suggestions; add a recompute workflow if listings become
   highly editable or the volume grows.
-- Hosted Supabase Auth currently has Confirm email enabled, which sends a magic
-  link instead of the product's six-digit OTP. Disable that setting in the Auth
-  Email provider and use the six-digit OTP template before launch.
-- The hosted Phase 1 schema existed before MCP migration history was inspected;
-  Phase 2 is tracked remotely, while the local numbered migration remains the
-  source of truth for clean environments.
+- Demo/admin creation needs a service-role key and the one-time
+  `scripts/create-demo-users.mjs` command. Never put that key in Vercel or Expo
+  public variables.

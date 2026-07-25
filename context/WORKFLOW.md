@@ -20,6 +20,8 @@
    and response shapes.
 5. Update this context folder whenever architecture, working state, commands, or
    important risks change.
+6. For hosted auth changes, use the Supabase dashboard. Code cannot override the
+   provider's email template, SMTP sender, Site URL, or redirect allow-list.
 
 ## Verify
 
@@ -37,6 +39,10 @@ npm test
 npm run lint
 npm run build
 ```
+
+For the mobile app, copy `apps/mobile/.env.example` to an untracked `.env`, set
+the hosted project URL plus publishable key, then run `npm run start` from
+`apps/mobile`.
 
 For UI changes, run the dev server and walk through desktop and mobile layouts,
 auth redirects, create/upload, browse/search/filter, owner actions, and a

@@ -7,6 +7,10 @@
   private claim flow, finder review, preference toggle, and lifecycle actions.
 - `apps/web/src/components` — auth/onboarding components plus the evidence-board
   header, listing form, and listing cards.
+- `apps/web/src/app/admin` — server-authorized college approval and Loyola
+  Academy setup; it must not be treated as the only authorization layer.
+- `apps/mobile` — Expo v57 thin client; uses SecureStore and the same Supabase
+  project through `EXPO_PUBLIC_SUPABASE_URL` and publishable key.
 - `apps/web/src/lib/listings` — listing constants, validation, keyword cleanup,
   and prefix-search query shaping.
 - `apps/web/src/lib/supabase` — lazy browser/server clients, environment parsing,
@@ -28,6 +32,10 @@ functions. The session-refresh boundary is `apps/web/src/proxy.ts`.
   `tsvector`, indexes, community visibility helper, safe public view, owner-only
   exact-location RPC, close transition, RLS/grants, and Storage bucket policies.
 - `supabase/seed.sql` — twelve campus zones.
+- `supabase/migrations/0005_communication.sql` and
+  `0006_returns_moderation.sql` — conversations, notifications, handovers,
+  reports, moderation actions, blocks, and college-review functions.
+- `supabase/migrations/0007_mobile_push.sql` — user-owned Expo device tokens.
 - `supabase/tests/database` — schema, grants, RLS, visibility, privacy, lifecycle,
   and cascade contracts.
 - `listing-images` — public-read image bucket. Writes are limited to
