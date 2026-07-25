@@ -555,3 +555,44 @@ input::placeholder { color: #9a907c; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+/* Top Loading Progress Bar */
+.top-loading-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.top-loading-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lost) 0%, var(--manila-dark) 50%, var(--found) 100%);
+  box-shadow: 0 0 10px rgba(46, 107, 79, 0.7);
+  transform-origin: left center;
+}
+
+/* Tactile Pin & Cork Adjustments */
+.note-pin {
+  background: radial-gradient(circle at 35% 30%, #e85f5f, #a72222 72%);
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 0 0 2px rgba(255, 255, 255, 0.4);
+  height: 0.9rem;
+  width: 0.9rem;
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Focus and Active Physics */
+button, a {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:active, a:active {
+  transform: scale(0.97);
+}
+

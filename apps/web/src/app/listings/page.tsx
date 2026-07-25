@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BoardHeader } from "@/components/board-header";
-import { ListingCard, type ListingCardData } from "@/components/listing-card";
-import { categoryLabel, LISTING_CATEGORIES, toPrefixTsQuery, type ListingCategory } from "@/lib/listings/validation";
+import { ListingBoardContainer } from "@/components/listing-board-container";
+import { type ListingCardData } from "@/components/listing-card";
+import { toPrefixTsQuery } from "@/lib/listings/validation";
 import { createClient } from "@/lib/supabase/server";
 import { toggleIndependentPosts } from "./actions";
+import { PlusCircle } from "lucide-react";
 
 const PAGE_SIZE = 12;
 
@@ -26,7 +28,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
   if (!user) redirect("/login");
 
   const [profileResult, zonesResult] = await Promise.all([
-    supabase.from("profiles").select("college_id, show_independent_posts, onboarding_completed_at").eq("id", user.id).single(),
+    supabase.from("profiles").select("college_id, show_independent_posts, is_admin, onboarding_completed_at").eq("id", user.id).single(),
     supabase.from("campus_zones").select("id, name").order("name"),
   ]);
   if (!profileResult.data?.onboarding_completed_at) redirect("/onboarding?next=/listings");
@@ -72,37 +74,59 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
   };
 
   return (
-    <main className="board-shell">
-      <BoardHeader />
-      <section className="board-intro">
-        <div><p className="eyebrow">Live community evidence board</p><h1>What went <em>missing</em>.<br />What turned <em>up</em>.</h1></div>
-        <Link className="primary-button post-cta" href="/listings/new">+ Pin a report</Link>
+    <main className="board-shell min-h-screen px-4 pb-16 pt-2 max-w-6xl mx-auto">
+      <BoardHeader isAdmin={profileResult.data?.is_admin} />
+
+      <section className="board-intro my-8 rounded-3xl border border-[var(--manila-dark)]/30 bg-[var(--paper-bright)] p-8 shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative overflow-hidden">
+        <div className="space-y-2 max-w-2xl">
+          <p className="eyebrow font-mono text-xs uppercase tracking-widest font-bold text-[var(--lost)]">Live community evidence board</p>
+          <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight leading-tight text-[var(--ink)]">
+            What went <em className="text-[var(--lost)]">missing</em>.<br />What turned <em className="text-[var(--found)]">up</em>.
+          </h1>
+          <p className="text-sm text-[var(--muted-ink)] leading-relaxed">
+            Browse pinned reports from your campus community or report a lost or found item while the trail is fresh.
+          </p>
+        </div>
+        <Link
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--found)] px-6 py-3.5 text-sm font-bold text-white shadow-lg hover:bg-[#23533d] transition-all hover:scale-105 active:scale-95 shrink-0"
+          href="/listings/new"
+        >
+          <PlusCircle className="h-5 w-5" />
+          <span>+ Pin a report</span>
+        </Link>
       </section>
 
-      <div className="kind-tabs" aria-label="Listing kind">
-        <Link className={kind === "lost" ? "active lost" : ""} href="/listings?kind=lost">Lost</Link>
-        <Link className={kind === "found" ? "active found" : ""} href="/listings?kind=found">Found</Link>
-      </div>
+      {error ? (
+        <div className="rounded-2xl border border-[var(--lost)]/40 bg-[var(--lost)]/10 p-6 text-center text-sm font-bold text-[var(--lost)]">
+          Could not load the board: {error.message}
+        </div>
+      ) : (
+        <ListingBoardContainer
+          kind={kind}
+          query={query}
+          category={category}
+          zoneId={zoneId}
+          from={from}
+          to={to}
+          zones={zonesResult.data ?? []}
+          cards={cards}
+          profile={profileResult.data}
+          toggleOutsideAction={toggleIndependentPosts}
+        />
+      )}
 
-      <section className="filter-ticket" aria-label="Search and filters">
-        <form method="get">
-          <input type="hidden" name="kind" value={kind} />
-          <label>Search<input type="search" name="q" defaultValue={query} placeholder="wallet, blue bottle, calculator…" /></label>
-          <label>Category<select name="category" defaultValue={category}><option value="">All items</option>{LISTING_CATEGORIES.map((item) => <option key={item} value={item}>{categoryLabel(item as ListingCategory)}</option>)}</select></label>
-          <label>Zone<select name="zone" defaultValue={zoneId}><option value="">All zones</option>{(zonesResult.data ?? []).map((zone) => <option key={zone.id} value={zone.id}>{zone.name}</option>)}</select></label>
-          <label>From<input type="date" name="from" defaultValue={from} /></label>
-          <label>To<input type="date" name="to" defaultValue={to} /></label>
-          <button className="secondary-button" type="submit">Search board</button>
-        </form>
-        {profileResult.data?.college_id && <form className="outside-toggle" action={toggleIndependentPosts}><input type="hidden" name="enabled" value={profileResult.data.show_independent_posts ? "false" : "true"} /><span>Posts from people outside your college</span><button type="submit" aria-pressed={profileResult.data.show_independent_posts}>{profileResult.data.show_independent_posts ? "Showing · turn off" : "Hidden · turn on"}</button></form>}
-      </section>
-
-      {error ? <p className="form-error">Could not load the board: {error.message}</p> : cards.length ? <section className="cork-board" aria-label={`${kind} listings`}>{cards.map((card) => <ListingCard key={card.id} listing={card} />)}</section> : <section className="empty-board"><span className="note-pin" /><p className="eyebrow">No reports pinned</p><h2>This side of the board is clear.</h2><p>Try removing a filter or be the first person to post.</p></section>}
-
-      <nav className="pagination" aria-label="Listing pages">
-        {page > 1 && <Link href={hrefForPage(page - 1)}>← Newer</Link>}
-        <span>Page {page}</span>
-        {page * PAGE_SIZE < (count ?? 0) && <Link href={hrefForPage(page + 1)}>Older →</Link>}
+      <nav className="pagination mt-10 flex items-center justify-between border-t border-[var(--line)] pt-6 text-sm font-semibold" aria-label="Listing pages">
+        {page > 1 ? (
+          <Link href={hrefForPage(page - 1)} className="rounded-full border border-[var(--line)] bg-[var(--paper-bright)] px-4 py-2 text-[var(--ink)] shadow-xs transition-all hover:bg-[var(--manila)]/30 active:scale-95">
+            ← Newer reports
+          </Link>
+        ) : <div />}
+        <span className="font-mono text-xs text-[var(--muted-ink)]">Page {page}</span>
+        {page * PAGE_SIZE < (count ?? 0) ? (
+          <Link href={hrefForPage(page + 1)} className="rounded-full border border-[var(--line)] bg-[var(--paper-bright)] px-4 py-2 text-[var(--ink)] shadow-xs transition-all hover:bg-[var(--manila)]/30 active:scale-95">
+            Older reports →
+          </Link>
+        ) : <div />}
       </nav>
     </main>
   );

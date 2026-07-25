@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { TopLoadingBar } from "@/components/top-loading-bar";
 import "./globals.css";
 
 const inter = Inter({
@@ -33,7 +35,12 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${fraunces.variable} ${jetBrainsMono.variable}`}
     >
-      <body>{children}</body>
+      <body className="bg-[var(--paper)] text-[var(--ink)] antialiased">
+        <Suspense fallback={null}>
+          <TopLoadingBar />
+        </Suspense>
+        {children}
+      </body>
     </html>
   );
 }
