@@ -77,8 +77,10 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
     <main className="board-shell min-h-screen px-4 pb-16 pt-2 max-w-6xl mx-auto">
       <BoardHeader isAdmin={profileResult.data?.is_admin} />
 
-      <section className="board-intro my-8 rounded-3xl border border-[var(--manila-dark)]/30 bg-[var(--paper-bright)] p-8 shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative overflow-hidden">
-        <div className="space-y-2 max-w-2xl">
+      <section className="board-intro my-8 border-2 border-[var(--manila-dark)] bg-[var(--paper-bright)] p-8 shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative overflow-hidden">
+        <span className="note-pin absolute left-1/2 top-3 -translate-x-1/2 z-20" aria-hidden="true" />
+
+        <div className="space-y-2 max-w-2xl mt-2">
           <p className="eyebrow font-mono text-xs uppercase tracking-widest font-bold text-[var(--lost)]">Live community evidence board</p>
           <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight leading-tight text-[var(--ink)]">
             What went <em className="text-[var(--lost)]">missing</em>.<br />What turned <em className="text-[var(--found)]">up</em>.
@@ -88,16 +90,16 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
           </p>
         </div>
         <Link
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--found)] px-6 py-3.5 text-sm font-bold text-white shadow-lg hover:bg-[#23533d] transition-all hover:scale-105 active:scale-95 shrink-0"
+          className="inline-flex items-center justify-center gap-2 border border-[var(--found)] bg-[var(--found)] px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-xs hover:bg-[#23533d] transition-all hover:scale-[1.02] active:scale-95 shrink-0"
           href="/listings/new"
         >
-          <PlusCircle className="h-5 w-5" />
+          <PlusCircle className="h-4 w-4" />
           <span>+ Pin a report</span>
         </Link>
       </section>
 
       {error ? (
-        <div className="rounded-2xl border border-[var(--lost)]/40 bg-[var(--lost)]/10 p-6 text-center text-sm font-bold text-[var(--lost)]">
+        <div className="border border-[var(--lost)] bg-[var(--lost)]/10 p-6 text-center text-xs font-mono font-bold uppercase tracking-wider text-[var(--lost)]">
           Could not load the board: {error.message}
         </div>
       ) : (
@@ -115,15 +117,15 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
         />
       )}
 
-      <nav className="pagination mt-10 flex items-center justify-between border-t border-[var(--line)] pt-6 text-sm font-semibold" aria-label="Listing pages">
+      <nav className="pagination mt-10 flex items-center justify-between border-t border-[var(--manila-dark)]/40 pt-6 text-xs font-mono font-bold uppercase tracking-wider" aria-label="Listing pages">
         {page > 1 ? (
-          <Link href={hrefForPage(page - 1)} className="rounded-full border border-[var(--line)] bg-[var(--paper-bright)] px-4 py-2 text-[var(--ink)] shadow-xs transition-all hover:bg-[var(--manila)]/30 active:scale-95">
+          <Link href={hrefForPage(page - 1)} className="border border-[var(--manila-dark)] bg-[var(--paper-bright)] px-4 py-2 text-[var(--ink)] shadow-xs transition-all hover:bg-[var(--manila)]/30 active:scale-95">
             ← Newer reports
           </Link>
         ) : <div />}
-        <span className="font-mono text-xs text-[var(--muted-ink)]">Page {page}</span>
+        <span className="text-[var(--muted-ink)]">Page {page}</span>
         {page * PAGE_SIZE < (count ?? 0) ? (
-          <Link href={hrefForPage(page + 1)} className="rounded-full border border-[var(--line)] bg-[var(--paper-bright)] px-4 py-2 text-[var(--ink)] shadow-xs transition-all hover:bg-[var(--manila)]/30 active:scale-95">
+          <Link href={hrefForPage(page + 1)} className="border border-[var(--manila-dark)] bg-[var(--paper-bright)] px-4 py-2 text-[var(--ink)] shadow-xs transition-all hover:bg-[var(--manila)]/30 active:scale-95">
             Older reports →
           </Link>
         ) : <div />}

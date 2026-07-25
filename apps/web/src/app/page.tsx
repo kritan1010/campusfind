@@ -24,10 +24,12 @@ export default async function HomePage() {
       <BoardHeader isAdmin={profile?.is_admin} />
 
       {/* Welcome Card Hero */}
-      <section className="welcome-card relative overflow-hidden rounded-3xl border border-[var(--manila-dark)]/30 bg-[var(--paper-bright)] p-8 sm:p-12 shadow-xl">
-        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+      <section className="welcome-card relative overflow-hidden border-2 border-[var(--manila-dark)] bg-[var(--paper-bright)] p-8 sm:p-12 shadow-md">
+        <span className="note-pin absolute left-1/2 top-3 -translate-x-1/2 z-20" aria-hidden="true" />
+
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mt-2">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[var(--found)]/10 px-3 py-1 text-xs font-mono font-bold uppercase tracking-widest text-[var(--found)] border border-[var(--found)]/20">
+            <div className="inline-flex items-center gap-2 border border-[var(--found)] bg-[var(--found)]/10 px-3 py-1 text-xs font-mono font-bold uppercase tracking-widest text-[var(--found)]">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Community board · Live active</span>
             </div>
@@ -42,32 +44,32 @@ export default async function HomePage() {
 
             <div className="home-actions pt-2 flex flex-wrap items-center gap-3">
               <Link
-                className="inline-flex items-center gap-2 rounded-full bg-[var(--found)] px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-[#23533d] transition-all hover:scale-105 active:scale-95"
+                className="inline-flex items-center gap-2 border border-[var(--ink)] bg-[var(--ink)] px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-xs hover:bg-black transition-all hover:scale-[1.02] active:scale-95"
                 href="/listings"
               >
                 <Compass className="h-4 w-4" />
                 <span>Browse reports</span>
               </Link>
               <Link
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--paper)] px-6 py-3 text-sm font-bold text-[var(--ink)] shadow-xs hover:bg-[var(--manila)]/30 transition-all hover:scale-105 active:scale-95"
+                className="inline-flex items-center gap-2 border border-[var(--found)] bg-[var(--found)] px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-xs hover:bg-[#23533d] transition-all hover:scale-[1.02] active:scale-95"
                 href="/listings/new"
               >
-                <PlusCircle className="h-4 w-4 text-[var(--found)]" />
+                <PlusCircle className="h-4 w-4" />
                 <span>Post an item</span>
               </Link>
               {profile?.is_admin && (
                 <Link
-                  className="inline-flex items-center gap-2 rounded-full border border-[var(--manila-dark)]/40 bg-[var(--manila)]/20 px-6 py-3 text-sm font-bold text-[var(--ink)] shadow-xs hover:bg-[var(--manila)]/40 transition-all hover:scale-105 active:scale-95"
+                  className="inline-flex items-center gap-2 border border-[var(--manila-dark)] bg-[var(--manila)] px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider text-[var(--ink)] shadow-xs hover:bg-[var(--manila-dark)] hover:text-white transition-all hover:scale-[1.02] active:scale-95"
                   href="/admin"
                 >
-                  <ShieldCheck className="h-4 w-4 text-[var(--cork)]" />
+                  <ShieldCheck className="h-4 w-4" />
                   <span>Manage campus</span>
                 </Link>
               )}
             </div>
           </div>
 
-          <div className="status-stamp inline-flex items-center gap-2 rounded-2xl border border-[var(--manila-dark)]/40 bg-[var(--paper)] px-4 py-3 shadow-md font-mono text-xs font-bold uppercase tracking-wider text-[var(--found)] shrink-0">
+          <div className="status-stamp inline-flex items-center gap-2 border border-[var(--found)] bg-[var(--paper)] px-4 py-2.5 shadow-xs font-mono text-xs font-bold uppercase tracking-wider text-[var(--found)] shrink-0">
             <CheckCircle2 className="h-4 w-4" />
             <span>Account Verified</span>
           </div>
@@ -75,8 +77,8 @@ export default async function HomePage() {
       </section>
 
       {/* Campus Zones Section */}
-      <section className="zones-panel rounded-3xl border border-[var(--manila-dark)]/30 bg-[var(--paper-bright)] p-8 shadow-lg" aria-labelledby="zones-heading">
-        <div className="section-heading flex items-center justify-between pb-4 border-b border-[var(--line)]/50">
+      <section className="zones-panel border-2 border-[var(--manila-dark)] bg-[var(--paper-bright)] p-8 shadow-md" aria-labelledby="zones-heading">
+        <div className="section-heading flex items-center justify-between pb-4 border-b border-dashed border-[var(--manila-dark)]">
           <div>
             <p className="eyebrow font-mono text-xs uppercase tracking-widest font-bold text-[var(--lost)] flex items-center gap-1.5">
               <MapPin className="h-3.5 w-3.5" />
@@ -86,7 +88,7 @@ export default async function HomePage() {
               Campus zones
             </h2>
           </div>
-          <span className="font-mono text-xs font-bold text-[var(--muted-ink)] bg-[var(--paper)] px-3 py-1 rounded-full border border-[var(--line)]">
+          <span className="font-mono text-xs font-bold text-[var(--muted-ink)] border border-[var(--manila-dark)] bg-[var(--paper)] px-3 py-1">
             {zones?.length ?? 0} Locations
           </span>
         </div>

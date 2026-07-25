@@ -25,16 +25,16 @@ export function QuickViewModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 bg-black/40"
         />
 
         {/* Modal Ticket */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ type: "spring", stiffness: 350, damping: 25 }}
-          className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl border border-[var(--manila-dark)] bg-[var(--paper-bright)] p-6 shadow-2xl"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 15 }}
+          transition={{ duration: 0.2 }}
+          className="relative z-10 w-full max-w-lg overflow-hidden border-2 border-[var(--manila-dark)] bg-[var(--paper-bright)] p-6 shadow-2xl"
         >
           {/* Top pin */}
           <span className="note-pin absolute left-1/2 top-3 -translate-x-1/2 z-20" aria-hidden="true" />
@@ -42,14 +42,14 @@ export function QuickViewModal({
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--paper)] text-[var(--ink)] transition-transform hover:bg-[var(--manila)]/30 active:scale-90"
+            className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center border border-[var(--manila-dark)] bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--manila)]/40 active:scale-90 cursor-pointer"
             aria-label="Close detail preview"
           >
             <X className="h-4 w-4" />
           </button>
 
           <div className="mt-4 flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-[var(--muted-ink)]">
-            <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs text-white ${listing.kind === "lost" ? "bg-[var(--lost)]" : "bg-[var(--found)]"}`}>
+            <span className={`inline-flex items-center gap-1 border px-2.5 py-0.5 text-xs text-white ${listing.kind === "lost" ? "bg-[var(--lost)] border-[var(--lost)]" : "bg-[var(--found)] border-[var(--found)]"}`}>
               {listing.kind === "lost" ? <AlertCircle className="h-3 w-3" /> : <ShieldCheck className="h-3 w-3" />}
               {listing.kind}
             </span>
@@ -61,7 +61,7 @@ export function QuickViewModal({
             {listing.title}
           </h2>
 
-          <div className="relative mt-4 aspect-video w-full overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--paper)] shadow-inner">
+          <div className="relative mt-4 aspect-video w-full overflow-hidden border border-[var(--manila-dark)]/40 bg-[var(--paper)]">
             {listing.imageUrl ? (
               <Image src={listing.imageUrl} alt={listing.title} fill className="object-cover" />
             ) : (
@@ -72,44 +72,44 @@ export function QuickViewModal({
           </div>
 
           <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
-            <div className="flex items-center gap-2.5 rounded-lg border border-[var(--line)]/50 bg-[var(--paper)] p-2.5">
+            <div className="flex items-center gap-2.5 border border-[var(--manila-dark)]/40 bg-[var(--paper)] p-2.5">
               <Tag className="h-4 w-4 text-[var(--manila-dark)]" />
               <div>
-                <div className="text-[0.7rem] uppercase font-mono font-bold text-[var(--muted-ink)]">Category</div>
+                <div className="text-[0.68rem] uppercase font-mono font-bold text-[var(--muted-ink)]">Category</div>
                 <div className="font-semibold text-[var(--ink)]">{categoryLabel(listing.category)}</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 rounded-lg border border-[var(--line)]/50 bg-[var(--paper)] p-2.5">
+            <div className="flex items-center gap-2.5 border border-[var(--manila-dark)]/40 bg-[var(--paper)] p-2.5">
               <MapPin className="h-4 w-4 text-[var(--found)]" />
               <div>
-                <div className="text-[0.7rem] uppercase font-mono font-bold text-[var(--muted-ink)]">Zone</div>
+                <div className="text-[0.68rem] uppercase font-mono font-bold text-[var(--muted-ink)]">Zone</div>
                 <div className="font-semibold text-[var(--ink)]">{listing.zoneName}</div>
               </div>
             </div>
           </div>
 
-          <div className="mt-3 flex items-center gap-2.5 rounded-lg border border-[var(--line)]/50 bg-[var(--paper)] p-2.5 text-sm">
+          <div className="mt-3 flex items-center gap-2.5 border border-[var(--manila-dark)]/40 bg-[var(--paper)] p-2.5 text-sm">
             <Calendar className="h-4 w-4 text-[var(--lost)]" />
             <div>
-              <div className="text-[0.7rem] uppercase font-mono font-bold text-[var(--muted-ink)]">Event Date</div>
+              <div className="text-[0.68rem] uppercase font-mono font-bold text-[var(--muted-ink)]">Event Date</div>
               <div className="font-semibold text-[var(--ink)]">{listing.eventDate}</div>
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-3 pt-4 border-t border-[var(--line)]">
+          <div className="mt-6 flex items-center justify-end gap-3 pt-4 border-t border-dashed border-[var(--manila-dark)]">
             <button
               onClick={onClose}
-              className="rounded-full px-4 py-2 text-sm font-semibold text-[var(--muted-ink)] hover:bg-[var(--manila)]/20 active:scale-95"
+              className="border border-[var(--manila-dark)] bg-[var(--paper)] px-4 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-[var(--muted-ink)] hover:bg-[var(--manila)]/30 active:scale-95 cursor-pointer"
             >
               Close
             </button>
             <Link
               href={`/listings/${listing.id}`}
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--ink)] px-5 py-2 text-sm font-bold text-[var(--paper-bright)] shadow-md hover:bg-black active:scale-95 transition-transform"
+              className="inline-flex items-center gap-2 border border-[var(--ink)] bg-[var(--ink)] px-5 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-xs hover:bg-black active:scale-95 transition-transform"
             >
               <span>View full details</span>
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </motion.div>

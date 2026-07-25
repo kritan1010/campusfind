@@ -14,15 +14,15 @@ export function ZoneList({ zones }: { zones: Zone[] }) {
       {zones.map((zone, index) => (
         <motion.li
           key={zone.id}
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.2, delay: index * 0.03 }}
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.15, delay: index * 0.02 }}
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.96 }}
         >
           <Link
             href={`/listings?zone=${zone.id}`}
-            className="flex items-center gap-2 rounded-xl border border-[var(--manila-dark)]/30 bg-[var(--paper-bright)] px-3.5 py-2.5 text-xs font-semibold text-[var(--ink)] shadow-xs transition-all hover:bg-[var(--manila)]/30 hover:border-[var(--found)] hover:shadow-md"
+            className="flex items-center gap-2 border border-[var(--manila-dark)]/40 bg-[var(--paper-bright)] px-3 py-2 text-xs font-mono font-bold uppercase tracking-wider text-[var(--ink)] shadow-xs transition-all hover:bg-[var(--manila)]/40 hover:border-[var(--found)]"
           >
             <MapPin className="h-3.5 w-3.5 text-[var(--found)] shrink-0" />
             <span className="truncate">{zone.name}</span>
