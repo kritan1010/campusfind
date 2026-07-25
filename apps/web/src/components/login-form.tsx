@@ -20,7 +20,12 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
       setPending(true);
       const { error: authError } = await createClient().auth.signInWithOtp({
         email: normalizedEmail,
-        options: { shouldCreateUser: true },
+        options: {
+          shouldCreateUser: true,
+          // Hosted Supabase uses this for confirmation/magic-link callbacks.
+          // OTP verification itself still happens on the next screen.
+          emailRedirectTo: `${window.location.origin}/login/verify?email=${encodeURIComponent(normalizedEmail)}&next=${encodeURIComponent(nextPath)}`,
+        },
       });
       if (authError) throw authError;
 
