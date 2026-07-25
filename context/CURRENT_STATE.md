@@ -24,7 +24,10 @@ Last updated: 2026-07-25
 
 ## In progress
 
-- No product phase is actively in progress. Phase 4 (communication) is next.
+- Phases 4 and 5 backend are live: comments, private conversations/messages,
+  notifications, blocks, handover confirmations, reporting, moderation, college
+  review helpers, and push-subscription persistence. The next UI pass should
+  expand inbox/admin screens and connect a VAPID sender.
 
 ## Known risks and follow-ups
 
@@ -38,6 +41,9 @@ Last updated: 2026-07-25
 - Match suggestions are generated on listing creation. Editing a listing does
   not recompute existing suggestions; add a recompute workflow if listings become
   highly editable or the volume grows.
+- Hosted Supabase Auth currently has Confirm email enabled, which sends a magic
+  link instead of the product's six-digit OTP. Disable that setting in the Auth
+  Email provider and use the six-digit OTP template before launch.
 - The hosted Phase 1 schema existed before MCP migration history was inspected;
   Phase 2 is tracked remotely, while the local numbered migration remains the
   source of truth for clean environments.

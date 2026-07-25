@@ -1,5 +1,12 @@
 # Context changelog
 
+## 2026-07-25 — Phases 4 and 5 foundations
+
+- Added secure comments, member conversations/messages, notification triggers,
+  blocks, and guarded conversation startup.
+- Added handover confirmation, reporting, moderation/college review helpers,
+  suspension state, and persisted web-push subscriptions.
+
 ## 2026-07-25 — Phase 3 matching and claims
 
 - Added automatic, mutually visible Lost/Found match suggestions and match dismissal.

@@ -215,6 +215,9 @@ export type Database = {
         Returns: ClaimStatus;
       };
       dismiss_match: { Args: { p_match_id: string }; Returns: undefined; };
+      start_conversation: { Args: { p_listing_id: string; p_other_user_id: string }; Returns: string; };
+      confirm_handover: { Args: { p_claim_id: string }; Returns: ListingStatus; };
+      mark_conversation_read: { Args: { p_conversation_id: string }; Returns: undefined; };
       request_college: {
         Args: { requested_name: string };
         Returns: string;

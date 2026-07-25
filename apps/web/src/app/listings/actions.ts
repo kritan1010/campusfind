@@ -100,3 +100,23 @@ export async function dismissMatch(formData: FormData) {
   if (error) throw new Error(error.message);
   revalidatePath(`/listings/${listingId}/matches`);
 }
+
+export async function startConversation(formData: FormData) {
+  const listingId = String(formData.get("listingId") ?? "");
+  const otherUserId = String(formData.get("otherUserId") ?? "");
+  if (!listingId || !otherUserId) throw new Error("Conversation details are required.");
+  const { supabase } = await authenticatedClient();
+  const { data, error } = await supabase.rpc("start_conversation", { p_listing_id: listingId, p_other_user_id: otherUserId });
+  if (error || !data) throw new Error(error?.message ?? "Could not start a conversation.");
+  redirect(`/inbox/${data}`);
+}
+
+export async function confirmHandover(formData: FormData) {
+  const claimId = String(formData.get("claimId") ?? "");
+  const listingId = String(formData.get("listingId") ?? "");
+  if (!claimId || !listingId) throw new Error("Handover details are required.");
+  const { supabase } = await authenticatedClient();
+  const { error } = await supabase.rpc("confirm_handover", { p_claim_id: claimId });
+  if (error) throw new Error(error.message);
+  revalidatePath(`/listings/${listingId}`);
+}
