@@ -50,6 +50,21 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
     }
   }
 
+  async function signInWithGoogle() {
+    setError(null);
+    setPending(true);
+    const { error: oauthError } = await createClient().auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
+      },
+    });
+    if (oauthError) {
+      setError(oauthError.message);
+      setPending(false);
+    }
+  }
+
   return (
     <form className="stacked-form" onSubmit={submit} noValidate>
       <label htmlFor="email">Email address</label>
@@ -86,6 +101,10 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
       )}
       <button className="primary-button" type="submit" disabled={pending}>
         {pending ? "Signing in…" : password ? "Sign in with password" : "Email me a sign-in code"}
+      </button>
+      <div className="auth-divider"><span>or</span></div>
+      <button className="google-button" type="button" onClick={() => void signInWithGoogle()} disabled={pending}>
+        <span aria-hidden="true">G</span> Continue with Google
       </button>
     </form>
   );
