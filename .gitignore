@@ -1,0 +1,12 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Supabase CLI state
+supabase/.temp/
+supabase/.env
+
+# Editor and OS files
+.DS_Store
+*.swp

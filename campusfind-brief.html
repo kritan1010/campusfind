@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusFind — Product Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --manila:#D8C68F;
+    --manila-dark:#C2AC70;
+    --cork:#7C5232;
+    --paper:#FAF6EC;
+    --ink:#241D14;
+    --lost:#A3372F;
+    --found:#2E6B4F;
+    --thread:#3D3125;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(255,255,255,0.05), transparent 40%),
+      var(--cork);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px),
+      radial-gradient(circle at 20% 10%, rgba(255,255,255,0.06), transparent 40%),
+      linear-gradient(135deg, #8a5c39, #6b4527);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    padding:48px 20px 100px;
+  }
+  .board{ max-width:980px; margin:0 auto; }
+
+  header.hero{
+    background:var(--paper);
+    border:1px solid rgba(0,0,0,0.15);
+    box-shadow:0 22px 40px -20px rgba(0,0,0,0.6), 0 2px 0 rgba(255,255,255,0.4) inset;
+    padding:52px 44px 44px;
+    position:relative;
+    transform:rotate(-0.4deg);
+  }
+  header.hero::before{
+    content:"";
+    position:absolute; top:-14px; left:50%; transform:translateX(-50%) rotate(3deg);
+    width:34px; height:34px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #e7c86a, #b8942f 70%, #8a6c1f);
+    box-shadow:0 6px 10px rgba(0,0,0,0.45), inset 0 0 0 3px rgba(0,0,0,0.15);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--lost); font-weight:700; margin-bottom:14px;
+  }
+  h1{
+    font-family:'Fraunces',serif; font-weight:700;
+    font-size:clamp(2.6rem, 6vw, 4.4rem); line-height:0.98; margin:0 0 18px;
+    letter-spacing:-0.01em;
+  }
+  h1 span{color:var(--found); font-style:italic; font-weight:500;}
+  .lede{ max-width:56ch; font-size:1.08rem; color:#3a3226; }
+  .stamp{
+    position:absolute; top:36px; right:40px;
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em;
+    color:var(--lost); border:2px solid var(--lost); border-radius:6px;
+    padding:6px 10px; transform:rotate(6deg); opacity:.85;
+  }
+
+  section{ margin-top:56px; }
+  .section-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:22px; }
+  .section-head .tag{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--paper);
+    background:var(--ink); padding:3px 9px; border-radius:3px; letter-spacing:.06em;
+  }
+  .section-head h2{
+    font-family:'Fraunces',serif; font-size:1.7rem; color:var(--paper); margin:0; font-weight:600;
+  }
+
+  /* index card grid */
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr)); gap:20px; }
+  .card{
+    background:var(--paper); border:1px solid rgba(0,0,0,0.12);
+    padding:20px 20px 22px; box-shadow:0 10px 18px -12px rgba(0,0,0,0.5);
+    position:relative;
+  }
+  .card::before{
+    content:""; position:absolute; top:-9px; left:16px; width:18px; height:18px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #d8524a, #8f221d 70%);
+    box-shadow:0 4px 6px rgba(0,0,0,0.4);
+  }
+  .card h3{ font-family:'Fraunces',serif; font-size:1.05rem; margin:6px 0 8px; }
+  .card p{ font-size:0.92rem; color:#4a4030; margin:0; }
+
+  /* decision table */
+  table{ width:100%; border-collapse:collapse; background:var(--paper); box-shadow:0 10px 18px -12px rgba(0,0,0,0.5); }
+  th,td{ text-align:left; padding:12px 16px; font-size:0.92rem; border-bottom:1px solid rgba(0,0,0,0.08); }
+  th{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--cork); background:#f0e6cd; }
+  tr:last-child td{ border-bottom:none; }
+  td:first-child{ font-weight:600; white-space:nowrap; }
+
+  /* lifecycle tag chain — signature element */
+  .tagchain{
+    background:var(--paper); padding:44px 30px 34px; box-shadow:0 10px 18px -12px rgba(0,0,0,0.5);
+    overflow-x:auto;
+  }
+  .chain-row{ display:flex; align-items:center; gap:6px; min-width:max-content; padding-bottom:6px; }
+  .lifetag{
+    font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;
+    background:var(--manila); border:1px solid var(--manila-dark);
+    padding:10px 14px; border-radius:3px; position:relative; white-space:nowrap;
+    box-shadow:1px 2px 0 rgba(0,0,0,0.15);
+  }
+  .lifetag.branch{ background:#e9dcb8; opacity:0.85; font-weight:500; }
+  .lifetag::before{
+    content:""; position:absolute; top:-16px; left:50%; width:1px; height:16px; background:var(--thread);
+  }
+  .lifetag::after{
+    content:""; position:absolute; top:-19px; left:calc(50% - 3px); width:6px; height:6px; border-radius:50%;
+    background:#c9c2b0; border:1px solid #8b8371;
+  }
+  .arrow{ color:#8a7a52; font-size:14px; }
+  .chain-branch{ font-size:11px; font-family:'JetBrains Mono',monospace; color:#8a7a52; margin:6px 0 2px 0; padding-left:4px; }
+
+  /* stack strip */
+  .stack{ display:flex; flex-wrap:wrap; gap:10px; }
+  .pill{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; background:var(--ink); color:var(--paper);
+    padding:7px 13px; border-radius:20px; display:flex; gap:8px; align-items:center;
+  }
+  .pill b{ color:#e8c96a; font-weight:600; }
+
+  /* phase list */
+  .phases{ display:flex; flex-direction:column; gap:10px; }
+  .phase{
+    background:var(--paper); display:grid; grid-template-columns:56px 1fr; gap:16px;
+    padding:16px 20px; box-shadow:0 8px 14px -10px rgba(0,0,0,0.5); align-items:center;
+  }
+  .phase .num{ font-family:'Fraunces',serif; font-size:1.9rem; color:var(--manila-dark); font-weight:700; }
+  .phase .body h4{ margin:0 0 3px; font-family:'Fraunces',serif; font-size:1.05rem; }
+  .phase .body p{ margin:0; font-size:0.88rem; color:#4a4030; }
+
+  footer{
+    margin-top:60px; text-align:center; color:rgba(255,255,255,0.55);
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.05em;
+  }
+
+  @media (max-width:600px){
+    header.hero{ padding:38px 24px 30px; }
+    .stamp{ position:static; display:inline-block; margin-bottom:14px; transform:rotate(-2deg); }
+  }
+</style>
+</head>
+<body>
+<div class="board">
+
+  <header class="hero">
+    <div class="stamp">REGISTERED&nbsp;USERS&nbsp;ONLY</div>
+    <div class="eyebrow">Campus lost &amp; found — product brief</div>
+    <h1>Lost it?<br><span>Someone found it.</span></h1>
+    <p class="lede">CampusFind turns a scattered WhatsApp group and a security-office
+    drawer into a proper system: post it, get matched automatically, prove it's
+    yours, hand it back — without either side ever seeing a phone number.</p>
+  </header>
+
+  <section>
+    <div class="section-head"><span class="tag">01</span><h2>How a return actually happens</h2></div>
+    <div class="cards">
+      <div class="card"><h3>Post</h3><p>Lost or Found, with category, date, campus zone, optional exact pin, photos.</p></div>
+      <div class="card"><h3>Match</h3><p>Rule-based scoring surfaces likely counterparts by category, date, zone, colour, brand.</p></div>
+      <div class="card"><h3>Prove it</h3><p>Finder holds private proof questions only the true owner can answer.</p></div>
+      <div class="card"><h3>Hand back</h3><p>Both sides confirm the physical handover; the listing closes as Returned.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="tag">02</span><h2>The tag on every listing</h2></div>
+    <div class="tagchain">
+      <div class="chain-row">
+        <div class="lifetag">OPEN</div><span class="arrow">→</span>
+        <div class="lifetag">POSSIBLE&nbsp;MATCH</div><span class="arrow">→</span>
+        <div class="lifetag">CLAIMED</div><span class="arrow">→</span>
+        <div class="lifetag">RETURN&nbsp;PENDING</div><span class="arrow">→</span>
+        <div class="lifetag" style="background:#cfe3d5;border-color:#9dc2a9;">RETURNED</div>
+      </div>
+      <div class="chain-branch">CLAIMED → OPEN &nbsp;(claim rejected)</div>
+      <div class="chain-branch">OPEN → CLOSED &nbsp;(poster closes it)</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="tag">03</span><h2>What we decided, and why it sticks</h2></div>
+    <table>
+      <tr><th>Area</th><th>Decision</th></tr>
+      <tr><td>Authentication</td><td>Passwordless email OTP — confirms the inbox, not an institution</td></tr>
+      <tr><td>Eligibility</td><td>Any OTP-verified email, registered-user community</td></tr>
+      <tr><td>Contact privacy</td><td>Email &amp; phone stay hidden — always; talk via comments or in-app chat</td></tr>
+      <tr><td>Claim verification</td><td>Private proof questions, set and judged by the finder</td></tr>
+      <tr><td>Public location</td><td>Approximate zone shown publicly; exact pin stays restricted</td></tr>
+      <tr><td>Handover</td><td>Two-party confirmation — no one-sided "returned" claims</td></tr>
+      <tr><td>College sign-up</td><td>Search an approved college, or request a new one (student request → admin approval)</td></tr>
+      <tr><td>Independent users</td><td>No college? Post anyway — visibility to others is scoped, not blocked</td></tr>
+      <tr><td>Platforms</td><td>Next.js website first, Expo mobile app once the backend is proven</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="tag">04</span><h2>Who sees what</h2></div>
+    <div class="cards">
+      <div class="card"><h3>Same college</h3><p>Always visible to each other — that's the core community.</p></div>
+      <div class="card"><h3>College → independents</h3><p>Visible by default; each student can opt out in settings.</p></div>
+      <div class="card"><h3>Independent → college</h3><p>Only if that college has opted in to being publicly discoverable.</p></div>
+      <div class="card"><h3>College ↔ college</h3><p>Closed for now — each campus is its own board.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="tag">05</span><h2>Stack</h2></div>
+    <div class="stack">
+      <div class="pill"><b>Web</b> Next.js</div>
+      <div class="pill"><b>DB/Auth</b> Supabase · PostgreSQL</div>
+      <div class="pill"><b>Realtime</b> Chat + comments</div>
+      <div class="pill"><b>Security</b> Row Level Security everywhere</div>
+      <div class="pill"><b>Mobile</b> Expo</div>
+      <div class="pill"><b>Push</b> Web Push → native later</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="tag">06</span><h2>Six phases to ship</h2></div>
+    <div class="phases">
+      <div class="phase"><div class="num">1</div><div class="body"><h4>Foundation</h4><p>Next.js + Supabase project, OTP auth, profiles, campus zones, RLS baseline.</p></div></div>
+      <div class="phase"><div class="num">2</div><div class="body"><h4>Listings</h4><p>Create/browse/search Lost &amp; Found listings, images, zones, exact-pin privacy.</p></div></div>
+      <div class="phase"><div class="num">3</div><div class="body"><h4>Matching &amp; claims</h4><p>Scoring engine, suggested matches, proof questions, accept/reject.</p></div></div>
+      <div class="phase"><div class="num">4</div><div class="body"><h4>Communication</h4><p>Comments, private realtime chat, blocking, in-app notifications.</p></div></div>
+      <div class="phase"><div class="num">5</div><div class="body"><h4>Returns &amp; moderation</h4><p>Two-party handover, admin report queue, web push.</p></div></div>
+      <div class="phase"><div class="num">6</div><div class="body"><h4>Mobile app</h4><p>Expo client on the same Supabase backend, native camera/maps/push.</p></div></div>
+    </div>
+  </section>
+
+  <footer>campusfind · product brief · see plan.md for the full build plan</footer>
+</div>
+</body>
+</html>
