@@ -28,17 +28,17 @@ export default async function HomePage() {
         <span className="note-pin absolute left-1/2 top-3 -translate-x-1/2 z-20" aria-hidden="true" />
 
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mt-2">
-          <div className="space-y-4 max-w-2xl">
+          <div className="space-y-6 max-w-2xl">
             <div className="inline-flex items-center gap-2 border border-[var(--found)] bg-[var(--found)]/10 px-3 py-1 text-xs font-mono font-bold uppercase tracking-widest text-[var(--found)]">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Community board · Live active</span>
             </div>
 
-            <h1 className="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-[var(--ink)] leading-none">
-              Welcome, <em className="text-[var(--found)] font-normal">{profile?.display_name ?? "neighbour"}</em>.
+            <h1 className="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-[var(--ink)] leading-[1.1] block">
+              Welcome, <em className="text-[var(--found)] font-normal not-italic">{profile?.display_name ?? "neighbour"}</em>.
             </h1>
 
-            <p className="lede text-base sm:text-lg text-[var(--muted-ink)] leading-relaxed max-w-xl">
+            <p className="lede text-base sm:text-lg text-[var(--muted-ink)] leading-relaxed max-w-xl pt-2">
               The board is open. Browse recent reports or pin a lost or found item while the trail is fresh.
             </p>
 
@@ -46,21 +46,24 @@ export default async function HomePage() {
               <Link
                 className="inline-flex items-center gap-2 border border-[var(--ink)] bg-[var(--ink)] px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-xs hover:bg-black transition-all hover:scale-[1.02] active:scale-95"
                 href="/listings"
+                style={{ color: "#ffffff" }}
               >
-                <Compass className="h-4 w-4" />
-                <span>Browse reports</span>
+                <Compass className="h-4 w-4 text-white" />
+                <span className="text-white">Browse reports</span>
               </Link>
               <Link
                 className="inline-flex items-center gap-2 border border-[var(--found)] bg-[var(--found)] px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-xs hover:bg-[#23533d] transition-all hover:scale-[1.02] active:scale-95"
                 href="/listings/new"
+                style={{ color: "#ffffff" }}
               >
-                <PlusCircle className="h-4 w-4" />
-                <span>Post an item</span>
+                <PlusCircle className="h-4 w-4 text-white" />
+                <span className="text-white">Post an item</span>
               </Link>
               {profile?.is_admin && (
                 <Link
                   className="inline-flex items-center gap-2 border border-[var(--manila-dark)] bg-[var(--manila)] px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider text-[var(--ink)] shadow-xs hover:bg-[var(--manila-dark)] hover:text-white transition-all hover:scale-[1.02] active:scale-95"
                   href="/admin"
+                  style={{ color: "var(--ink)" }}
                 >
                   <ShieldCheck className="h-4 w-4" />
                   <span>Manage campus</span>
@@ -70,8 +73,8 @@ export default async function HomePage() {
           </div>
 
           <div className="status-stamp inline-flex items-center gap-2 border border-[var(--found)] bg-[var(--paper)] px-4 py-2.5 shadow-xs font-mono text-xs font-bold uppercase tracking-wider text-[var(--found)] shrink-0">
-            <CheckCircle2 className="h-4 w-4" />
-            <span>Account Verified</span>
+            <CheckCircle2 className="h-4 w-4 text-[var(--found)]" />
+            <span className="text-[var(--found)]">Account Verified</span>
           </div>
         </div>
       </section>

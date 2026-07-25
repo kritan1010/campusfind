@@ -80,21 +80,22 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
       <section className="board-intro my-8 border-2 border-[var(--manila-dark)] bg-[var(--paper-bright)] p-8 shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative overflow-hidden">
         <span className="note-pin absolute left-1/2 top-3 -translate-x-1/2 z-20" aria-hidden="true" />
 
-        <div className="space-y-2 max-w-2xl mt-2">
+        <div className="space-y-4 max-w-2xl mt-2">
           <p className="eyebrow font-mono text-xs uppercase tracking-widest font-bold text-[var(--lost)]">Live community evidence board</p>
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight leading-tight text-[var(--ink)]">
-            What went <em className="text-[var(--lost)]">missing</em>.<br />What turned <em className="text-[var(--found)]">up</em>.
+          <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight leading-[1.15] text-[var(--ink)] mb-3 block">
+            What went <em className="text-[var(--lost)] not-italic">missing</em>.<br />What turned <em className="text-[var(--found)] not-italic">up</em>.
           </h1>
-          <p className="text-sm text-[var(--muted-ink)] leading-relaxed">
+          <p className="text-sm text-[var(--muted-ink)] leading-relaxed pt-1">
             Browse pinned reports from your campus community or report a lost or found item while the trail is fresh.
           </p>
         </div>
         <Link
-          className="inline-flex items-center justify-center gap-2 border border-[var(--found)] bg-[var(--found)] px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-xs hover:bg-[#23533d] transition-all hover:scale-[1.02] active:scale-95 shrink-0"
+          className="inline-flex items-center justify-center gap-2 border border-[var(--found)] bg-[var(--found)] px-6 py-3.5 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-xs hover:bg-[#23533d] transition-all hover:scale-[1.02] active:scale-95 shrink-0"
           href="/listings/new"
+          style={{ color: "#ffffff" }}
         >
-          <PlusCircle className="h-4 w-4" />
-          <span>+ Pin a report</span>
+          <PlusCircle className="h-4 w-4 text-white" />
+          <span className="text-white">+ Pin a report</span>
         </Link>
       </section>
 
