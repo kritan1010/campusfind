@@ -22,23 +22,6 @@ export async function approveCollege(formData: FormData) {
   revalidatePath("/onboarding");
 }
 
-export async function addLoyolaAcademy() {
-  const supabase = await adminClient();
-  const { data: existing, error: lookupError } = await supabase.from("colleges").select("id, status").ilike("name", "Loyola Academy").maybeSingle();
-  if (lookupError) throw new Error(lookupError.message);
-  let collegeId = existing?.id;
-  if (!collegeId) {
-    const { data, error } = await supabase.rpc("request_college", { requested_name: "Loyola Academy" });
-    if (error) throw new Error(error.message);
-    collegeId = data;
-  }
-  if (existing?.status !== "approved") {
-    const { error } = await supabase.rpc("review_college", { p_college_id: collegeId, p_approve: true, p_publicly_discoverable: true });
-    if (error) throw new Error(error.message);
-  }
-  revalidatePath("/admin"); revalidatePath("/onboarding"); revalidatePath("/");
-}
-
 export async function decideReport(formData: FormData) {
   const reportId = String(formData.get("reportId") ?? "");
   const status = String(formData.get("status") ?? "");
