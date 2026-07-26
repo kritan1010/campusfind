@@ -9,5 +9,5 @@ export default async function NewListingPage() {
   if (!user) redirect("/login");
   const { data: zones } = await supabase.from("campus_zones").select("id, name").order("name");
 
-  return <main className="board-shell form-page"><BoardHeader /><header className="form-page-heading"><p className="eyebrow">New evidence card</p><h1>Pin it while the trail is <em>fresh</em>.</h1><p>Share enough to help the right person recognise the item. Keep private proof out of the public description.</p></header><section className="form-paper"><ListingForm zones={zones ?? []} /></section></main>;
+  return <main className="board-shell form-page"><BoardHeader /><header className="form-page-heading"><p className="eyebrow">New report</p><h1>Help it get <em>home.</em></h1><p>Share the right details, choose who should see the report, and keep exact information private until it is useful.</p></header><section className="form-paper"><ListingForm zones={zones ?? []} /></section></main>;
 }

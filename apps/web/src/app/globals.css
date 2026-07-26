@@ -476,21 +476,42 @@ input::placeholder { color: #9a907c; }
 .form-page-heading h1 em { color: var(--found); font-weight: 500; }
 .form-page-heading > p:last-child { color: var(--muted-ink); line-height: 1.6; max-width: 60ch; }
 .form-paper { background: var(--paper-bright); border: 1px solid var(--line); box-shadow: var(--shadow); padding: clamp(1.5rem, 5vw, 4rem); }
-.listing-form { display: flex; flex-direction: column; gap: 2rem; }
-.listing-form .form-section { display: flex; flex-direction: column; gap: 1rem; }
+.listing-form { display: flex; flex-direction: column; gap: 0; margin: 0 auto; max-width: 52rem; }
+.form-progress { align-items: center; border-bottom: 1px solid var(--line); color: var(--muted-ink); display: flex; font-family: var(--font-jetbrains), monospace; font-size: .62rem; gap: .65rem; justify-content: space-between; margin-bottom: 2.5rem; padding-bottom: 1rem; text-transform: uppercase; }
+.form-progress span { align-items: center; display: inline-flex; gap: .35rem; white-space: nowrap; }
+.form-progress b { align-items: center; background: #eee4ca; border-radius: 50%; color: var(--muted-ink); display: inline-flex; font-size: .58rem; height: 1.35rem; justify-content: center; width: 1.35rem; }
+.form-progress .current { color: var(--ink); }
+.form-progress .current b { background: var(--ink); color: var(--paper); }
+.form-progress i { background: var(--line); flex: 1; height: 1px; }
+.listing-form .form-section { border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 1rem; margin: 0; padding: 0 0 2.5rem; }
+.listing-form .form-section + .form-section { padding-top: 2.5rem; }
+.listing-form .form-section:last-of-type { border-bottom: 0; }
+.form-section-intro { color: var(--muted-ink); font-size: .84rem; line-height: 1.55; margin: -.65rem 0 .25rem; max-width: 58ch; }
+.listing-form label { color: var(--ink); font-size: .78rem; letter-spacing: .01em; }
+.listing-form label > span { font-weight: 400; }
+.listing-form input:not([type="checkbox"]):not([type="file"]), .listing-form select, .listing-form textarea { background: #fffefa; border: 1px solid #c7b98f; border-radius: 3px; margin-top: .4rem; min-height: 3.15rem; padding: .85rem .9rem; transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease; }
+.listing-form input:not([type="checkbox"]):not([type="file"]):focus, .listing-form select:focus, .listing-form textarea:focus { background: #fff; border-color: var(--found); box-shadow: 0 0 0 3px rgba(46,107,79,.12); outline: 0; }
 .listing-form textarea { line-height: 1.6; resize: vertical; }
-.listing-form input[type="file"] { border: 1px dashed var(--manila-dark) !important; padding: 1rem !important; }
+.listing-form textarea { min-height: 9rem; }
+.listing-form input[type="file"] { background: #f5edd7; border: 1px dashed var(--manila-dark) !important; cursor: pointer; min-height: 6rem; padding: 2rem 1rem !important; }
 .three-fields { grid-template-columns: repeat(3, 1fr); }
 .kind-toggle { display: grid; gap: .75rem; grid-template-columns: 1fr 1fr; }
 .kind-toggle button { background: transparent; border: 1px solid var(--line); cursor: pointer; font-family: var(--font-fraunces), Georgia, serif; font-size: 1.35rem; min-height: 4rem; }
 .kind-toggle button.active.lost { background: color-mix(in srgb, var(--lost) 12%, white); border: 2px solid var(--lost); color: var(--lost); }
 .kind-toggle button.active.found { background: color-mix(in srgb, var(--found) 12%, white); border: 2px solid var(--found); color: var(--found); }
+.kind-toggle button { border-radius: 3px; text-align: left; padding: 1rem 1.15rem; }
+.kind-toggle button::after { color: var(--muted-ink); content: "Choose"; display: block; font-family: var(--font-jetbrains), monospace; font-size: .6rem; margin-top: .35rem; text-transform: uppercase; }
+.kind-toggle button.active::after { color: currentColor; content: "Selected"; }
 .privacy-callout, .private-pin { background: #edf4ef; border-left: 3px solid var(--found); color: #315442; font-size: .78rem; line-height: 1.5; margin: 0; padding: .8rem 1rem; }
 .location-button { align-self: flex-start; background: transparent; border: 0; color: var(--found); cursor: pointer; font-size: .78rem; padding: 0; text-decoration: underline; text-underline-offset: .25rem; }
 .existing-images { display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr); }
 .image-check { background: #eee4ca; padding: .5rem; }
 .image-check img { height: 8rem; object-fit: cover; width: 100%; }
 .image-check span { align-items: center; display: flex; font-size: .72rem; gap: .45rem; margin-top: .4rem; }
+.form-submit-row { border-top: 1px solid var(--line); display: grid; gap: .65rem; margin-top: .5rem; padding-top: 1.5rem; }
+.form-submit-row .primary-button { justify-self: start; margin: 0; min-width: 12rem; }
+.form-submit-row .form-error { margin: 0; }
+.submit-note { color: var(--muted-ink); font-size: .72rem; margin: 0; }
 
 .case-file { background: var(--paper-bright); border-top: 7px solid var(--lost); box-shadow: var(--shadow); padding: clamp(1.5rem, 5vw, 4rem); }
 .case-file.found { border-top-color: var(--found); }
@@ -644,6 +665,9 @@ input::placeholder { color: #9a907c; }
   .cork-board { border-width: 6px; padding: 2rem 1.2rem; }
   .case-gallery img:first-child { grid-column: auto; }
   .owner-actions { width: 100%; }
+  .form-progress { align-items: flex-start; gap: .4rem; overflow-x: auto; justify-content: flex-start; }
+  .form-progress i { flex: 0 0 1rem; margin-top: .65rem; }
+  .form-progress span { flex: 0 0 auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -198,8 +198,15 @@ export function ListingForm({
 
   return (
     <form className="listing-form" onSubmit={handleSubmit}>
+      <div className="form-progress" aria-label="Report steps">
+        <span className="current"><b>01</b> Item</span><i />
+        <span><b>02</b> Audience</span><i />
+        <span><b>03</b> Place</span><i />
+        <span><b>04</b> Evidence</span>
+      </div>
       <fieldset className="form-section">
-        <legend className="section-kicker">01 · Report type</legend>
+        <legend className="section-kicker">01 / What happened?</legend>
+        <p className="form-section-intro">Start with the kind of report you want people to see.</p>
         <div className="kind-toggle">
           {(["lost", "found"] as const).map((value) => (
             <button key={value} type="button" className={kind === value ? `active ${value}` : ""} onClick={() => setKind(value)}>
@@ -210,7 +217,8 @@ export function ListingForm({
       </fieldset>
 
       <fieldset className="form-section">
-        <legend className="section-kicker">02 · Item notes</legend>
+        <legend className="section-kicker">02 / Identify the item</legend>
+        <p className="form-section-intro">Add the useful details first. Keep secret identifying information for the private claim flow.</p>
         <label>Short title<input name="title" required minLength={3} maxLength={120} defaultValue={listing?.title} placeholder="Black Casio calculator" /></label>
         <div className="field-grid">
           <label>Category<select name="category" defaultValue={listing?.category ?? ""} required><option value="" disabled>Choose one</option>{LISTING_CATEGORIES.map((category) => <option value={category} key={category}>{categoryLabel(category)}</option>)}</select></label>
@@ -227,7 +235,7 @@ export function ListingForm({
       </fieldset>
 
       <fieldset className="form-section">
-        <legend className="section-kicker">03 · Place</legend>
+        <legend className="section-kicker">03 / Choose an audience</legend>
         <label>Who should see this report?
           <select name="visibility" value={visibility} onChange={(event) => setVisibility(event.target.value as ListingVisibility)}>
             <option value="campus_only">People from this campus</option>
@@ -235,6 +243,11 @@ export function ListingForm({
           </select>
         </label>
         <p className="field-hint">Public reports are visible to every signed-in CampusFind member. Exact pins and contact details stay private.</p>
+      </fieldset>
+
+      <fieldset className="form-section">
+        <legend className="section-kicker">04 / Where was it?</legend>
+        <p className="form-section-intro">Choose the closest public place. Your exact pin is optional and stays private.</p>
         <label>Closest campus zone<select name="zoneId" defaultValue={listing?.zone_id ?? ""} required><option value="" disabled>Choose a pinned place</option>{zones.map((zone) => <option key={zone.id} value={zone.id}>{zone.name}</option>)}</select></label>
         <p className="privacy-callout">The zone is public. The exact pin stays private to you until a later claim flow explicitly shares it.</p>
         <button className="location-button" type="button" onClick={useCurrentPosition}>Use my current position as the private pin</button>
@@ -245,14 +258,18 @@ export function ListingForm({
       </fieldset>
 
       <fieldset className="form-section">
-        <legend className="section-kicker">04 · Evidence</legend>
+        <legend className="section-kicker">05 / Add evidence</legend>
+        <p className="form-section-intro">One clear photo is enough to start. You can add up to six.</p>
         {existingImages.length > 0 && <div className="existing-images">{existingImages.map((image) => <label className="image-check" key={image.id}><Image src={image.url} alt="Existing listing upload" width={180} height={130} /><span><input type="checkbox" checked={removedImageIds.includes(image.id)} onChange={(event) => setRemovedImageIds((current) => event.target.checked ? [...current, image.id] : current.filter((id) => id !== image.id))} /> Remove</span></label>)}</div>}
         <label>Photos <span>1–6, JPG/PNG/WebP, 8 MB each</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={(event) => setFiles(Array.from(event.target.files ?? []))} /></label>
         {files.length > 0 && <p className="field-hint">{files.length} new photo{files.length === 1 ? "" : "s"} ready to pin.</p>}
       </fieldset>
 
-      {error && <p className="form-error" role="alert">{error}</p>}
-      <button className="primary-button" disabled={pending} type="submit">{pending ? "Pinning report…" : listing ? "Save changes" : "Pin report to board"}</button>
+      <div className="form-submit-row">
+        {error && <p className="form-error" role="alert">{error}</p>}
+        <button className="primary-button" disabled={pending} type="submit">{pending ? "Saving report…" : listing ? "Save changes" : "Post report"}</button>
+        <p className="submit-note">You can edit or close this report later.</p>
+      </div>
     </form>
   );
 }
