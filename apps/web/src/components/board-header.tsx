@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, Compass, PlusCircle, User, LogOut, Menu, X, ShieldCheck, MapPin, MessageCircle } from "lucide-react";
+import { Bell, Compass, PlusCircle, User, LogOut, Menu, X, ShieldCheck, MessageCircle } from "lucide-react";
 import { signOut } from "@/app/actions";
 
 export function BoardHeader({ isAdmin }: { isAdmin?: boolean }) {
@@ -24,10 +24,7 @@ export function BoardHeader({ isAdmin }: { isAdmin?: boolean }) {
     <header className="topbar board-topbar sticky top-0 z-40 mb-8 pt-2">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 border-2 border-[var(--manila-dark)] bg-[var(--paper-bright)] px-5 py-3 shadow-md">
         <Link href="/" className="wordmark flex items-center gap-2.5 text-xl font-bold tracking-tight text-[var(--ink)] transition-transform hover:scale-[1.01] active:scale-95" aria-label="CampusFind home">
-          <div className="flex h-7 w-7 items-center justify-center bg-[var(--manila)] text-[var(--found)] border border-[var(--manila-dark)]">
-            <MapPin className="h-4 w-4 stroke-[2.5]" />
-          </div>
-          <span className="font-serif text-2xl text-[var(--ink)]">Campus<span className="text-[var(--found)] font-serif">Find</span></span>
+          <span className="font-serif text-2xl text-[var(--ink)]">CampusFind</span>
         </Link>
 
         {/* Desktop Navigation */}

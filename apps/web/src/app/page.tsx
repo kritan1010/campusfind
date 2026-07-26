@@ -11,7 +11,26 @@ export default async function HomePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/login");
+  if (!user) {
+    return (
+      <main className="landing-page">
+        <nav className="landing-nav" aria-label="Landing page navigation">
+          <Link className="landing-wordmark" href="/">CampusFind</Link>
+          <Link className="landing-login" href="/login">Sign in</Link>
+        </nav>
+        <section className="landing-hero">
+          <div className="landing-copy">
+            <p className="eyebrow">The campus return board</p>
+            <h1>Lost something?<br /><em>Find your way back.</em></h1>
+            <p>CampusFind helps students report lost and found items, discover nearby matches, and return things safely without exposing private contact details.</p>
+            <div className="landing-actions"><Link className="primary-button" href="/login">Get started</Link><Link className="landing-text-link" href="/login">Browse the board <span>→</span></Link></div>
+          </div>
+          <div className="landing-board" aria-label="CampusFind workflow preview"><div className="landing-board-top"><span>LIVE BOARD</span><span>CampusFind</span></div><div className="landing-note landing-note-lost"><small>LOST · TODAY</small><strong>Blue water bottle</strong><span>Science block · 2 hours ago</span></div><div className="landing-note landing-note-found"><small>FOUND · MATCHED</small><strong>Black notebook</strong><span>Library steps · returned</span></div><div className="landing-route"><span>Post</span><i>→</i><span>Match</span><i>→</i><span>Return</span></div></div>
+        </section>
+        <section className="landing-points"><article><span>01</span><h2>Report clearly</h2><p>Add a photo, a campus place, and the details that help the right person recognise it.</p></article><article><span>02</span><h2>Match privately</h2><p>Use in-app messages and proof questions without putting your email or phone number on the board.</p></article><article><span>03</span><h2>Return safely</h2><p>Keep the handover simple, visible to the right people, and easy to close when it is done.</p></article></section>
+      </main>
+    );
+  }
 
   const [{ data: profile }, { data: zones }] = await Promise.all([
     supabase.from("profiles").select("display_name, avatar_url, college_id, is_admin, onboarding_completed_at").eq("id", user.id).single(),
