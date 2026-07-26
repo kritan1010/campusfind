@@ -8,6 +8,7 @@ export type Json =
 
 export type CollegeStatus = "pending" | "approved" | "rejected";
 export type ListingKind = "lost" | "found";
+export type ListingVisibility = "campus_only" | "public";
 export type ListingStatus =
   | "open"
   | "possible_match"
@@ -16,6 +17,7 @@ export type ListingStatus =
   | "returned"
   | "closed";
 export type ClaimStatus = "pending" | "accepted" | "rejected";
+export type ReportStatus = "open" | "reviewing" | "resolved" | "dismissed";
 
 export type Database = {
   public: {
@@ -25,7 +27,10 @@ export type Database = {
           centroid_lat: number | null;
           centroid_lng: number | null;
           created_at: string;
+          category: string;
+          description: string | null;
           id: string;
+          is_active: boolean;
           name: string;
           updated_at: string;
         };
@@ -33,7 +38,10 @@ export type Database = {
           centroid_lat?: number | null;
           centroid_lng?: number | null;
           created_at?: string;
+          category?: string;
+          description?: string | null;
           id?: string;
+          is_active?: boolean;
           name: string;
           updated_at?: string;
         };
@@ -41,6 +49,9 @@ export type Database = {
           centroid_lat?: number | null;
           centroid_lng?: number | null;
           name?: string;
+          category?: string;
+          description?: string | null;
+          is_active?: boolean;
           updated_at?: string;
         };
         Relationships: [];
@@ -95,18 +106,18 @@ export type Database = {
           brand: string | null; category: string; colour: string | null; created_at: string;
           description: string; event_date: string; exact_lat: number | null; exact_lng: number | null;
           id: string; kind: ListingKind; model: string | null; poster_id: string;
-          search_document: unknown; status: ListingStatus; title: string; updated_at: string; zone_id: string | null;
+          search_document: unknown; status: ListingStatus; title: string; updated_at: string; visibility: ListingVisibility; zone_id: string | null;
         };
         Insert: {
           brand?: string | null; category: string; colour?: string | null; created_at?: string;
           description: string; event_date: string; exact_lat?: number | null; exact_lng?: number | null;
           id?: string; kind: ListingKind; model?: string | null; poster_id: string;
-          status?: ListingStatus; title: string; updated_at?: string; zone_id?: string | null;
+          status?: ListingStatus; title: string; updated_at?: string; visibility?: ListingVisibility; zone_id?: string | null;
         };
         Update: {
           brand?: string | null; category?: string; colour?: string | null; description?: string;
           event_date?: string; exact_lat?: number | null; exact_lng?: number | null; kind?: ListingKind;
-          model?: string | null; title?: string; zone_id?: string | null;
+          model?: string | null; title?: string; visibility?: ListingVisibility; zone_id?: string | null;
         };
         Relationships: [];
       };
@@ -120,6 +131,36 @@ export type Database = {
         Row: { id: string; listing_id: string; claimant_id: string; status: ClaimStatus; created_at: string; decided_at: string | null };
         Insert: { id?: string; listing_id: string; claimant_id: string; status?: ClaimStatus; created_at?: string; decided_at?: string | null };
         Update: { status?: ClaimStatus; decided_at?: string | null };
+        Relationships: [];
+      };
+      conversations: {
+        Row: { id: string; listing_id: string | null; created_at: string };
+        Insert: { id?: string; listing_id?: string | null; created_at?: string };
+        Update: { listing_id?: string | null };
+        Relationships: [];
+      };
+      conversation_members: {
+        Row: { conversation_id: string; user_id: string; last_read_at: string | null };
+        Insert: { conversation_id: string; user_id: string; last_read_at?: string | null };
+        Update: { last_read_at?: string | null };
+        Relationships: [];
+      };
+      messages: {
+        Row: { id: string; conversation_id: string; sender_id: string; body: string; created_at: string };
+        Insert: { id?: string; conversation_id: string; sender_id: string; body: string; created_at?: string };
+        Update: { body?: string };
+        Relationships: [];
+      };
+      notifications: {
+        Row: { id: string; user_id: string; kind: string; payload: Json; read_at: string | null; created_at: string };
+        Insert: { id?: string; user_id: string; kind: string; payload?: Json; read_at?: string | null; created_at?: string };
+        Update: { read_at?: string | null };
+        Relationships: [];
+      };
+      reports: {
+        Row: { id: string; reporter_id: string; reported_user_id: string | null; listing_id: string | null; reason: string; details: string | null; status: ReportStatus; created_at: string };
+        Insert: { id?: string; reporter_id: string; reported_user_id?: string | null; listing_id?: string | null; reason: string; details?: string | null; status?: ReportStatus; created_at?: string };
+        Update: { status?: ReportStatus };
         Relationships: [];
       };
       proof_questions: {
@@ -174,7 +215,7 @@ export type Database = {
           brand: string | null; category: string | null; colour: string | null; created_at: string | null;
           description: string | null; event_date: string | null; id: string | null; kind: ListingKind | null;
           model: string | null; poster_id: string | null; search_document: unknown; status: ListingStatus | null;
-          title: string | null; updated_at: string | null; zone_id: string | null;
+          title: string | null; updated_at: string | null; visibility: ListingVisibility | null; zone_id: string | null;
         };
         Insert: Record<string, never>;
         Update: Record<string, never>;
@@ -216,6 +257,10 @@ export type Database = {
       };
       dismiss_match: { Args: { p_match_id: string }; Returns: undefined; };
       start_conversation: { Args: { p_listing_id: string; p_other_user_id: string }; Returns: string; };
+      get_shared_listing_preview: { Args: { p_listing_id: string }; Returns: { id: string; kind: ListingKind; status: ListingStatus; title: string; category: string; event_date: string; created_at: string }[]; };
+      admin_create_campus_zone: { Args: { p_name: string; p_category: string; p_description: string | null; p_lat: number | null; p_lng: number | null }; Returns: string; };
+      admin_update_campus_zone: { Args: { p_id: string; p_name: string; p_category: string; p_description: string | null; p_lat: number | null; p_lng: number | null; p_active: boolean }; Returns: undefined; };
+      decide_report: { Args: { p_report_id: string; p_status: ReportStatus; p_action?: string | null; p_notes?: string | null }; Returns: undefined; };
       confirm_handover: { Args: { p_claim_id: string }; Returns: ListingStatus; };
       mark_conversation_read: { Args: { p_conversation_id: string }; Returns: undefined; };
       request_college: {

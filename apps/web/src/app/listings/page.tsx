@@ -21,6 +21,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
   const query = one(params.q)?.trim() ?? "";
   const from = one(params.from) ?? "";
   const to = one(params.to) ?? "";
+  const visibility = one(params.visibility) === "public" ? "public" : one(params.visibility) === "campus_only" ? "campus_only" : "";
   const page = Math.max(1, Number(one(params.page)) || 1);
 
   const supabase = await createClient();
@@ -43,6 +44,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
   if (zoneId) listingQuery = listingQuery.eq("zone_id", zoneId);
   if (from) listingQuery = listingQuery.gte("event_date", from);
   if (to) listingQuery = listingQuery.lte("event_date", to);
+  if (visibility) listingQuery = listingQuery.eq("visibility", visibility);
   const searchQuery = toPrefixTsQuery(query);
   if (searchQuery) listingQuery = listingQuery.textSearch("search_document", searchQuery, { config: "english" });
 
@@ -111,6 +113,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
           zoneId={zoneId}
           from={from}
           to={to}
+          visibility={visibility}
           zones={zonesResult.data ?? []}
           cards={cards}
           profile={profileResult.data}

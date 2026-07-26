@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Compass, PlusCircle, User, LogOut, Menu, X, ShieldCheck, MapPin } from "lucide-react";
+import { Bell, Compass, PlusCircle, User, LogOut, Menu, X, ShieldCheck, MapPin, MessageCircle } from "lucide-react";
 import { signOut } from "@/app/actions";
 
 export function BoardHeader({ isAdmin }: { isAdmin?: boolean }) {
@@ -14,7 +14,9 @@ export function BoardHeader({ isAdmin }: { isAdmin?: boolean }) {
   const navLinks = [
     { href: "/listings", label: "Browse board", icon: Compass },
     { href: "/listings/new", label: "Post an item", icon: PlusCircle, highlight: true },
-    { href: "/onboarding", label: "Profile", icon: User },
+    { href: "/inbox", label: "Inbox", icon: MessageCircle },
+    { href: "/notifications", label: "Updates", icon: Bell },
+    { href: "/profile", label: "Profile", icon: User },
     ...(isAdmin ? [{ href: "/admin", label: "Admin", icon: ShieldCheck }] : []),
   ];
 

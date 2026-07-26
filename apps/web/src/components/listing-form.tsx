@@ -11,6 +11,7 @@ import {
   validateListingDraft,
   type ListingKind,
 } from "@/lib/listings/validation";
+import type { ListingVisibility } from "@/lib/supabase/database.types";
 
 type Zone = { id: string; name: string };
 type ExistingImage = { id: string; storage_path: string; position: number; url: string };
@@ -18,6 +19,7 @@ type ListingSeed = {
   id: string; kind: ListingKind; title: string; description: string; category: string;
   colour: string | null; brand: string | null; model: string | null; event_date: string;
   zone_id: string | null; exact_lat: number | null; exact_lng: number | null;
+  visibility: ListingVisibility;
 };
 
 export function ListingForm({
@@ -36,6 +38,7 @@ export function ListingForm({
   const router = useRouter();
   const [supabase] = useState(createClient);
   const [kind, setKind] = useState<ListingKind>(listing?.kind ?? "lost");
+  const [visibility, setVisibility] = useState<ListingVisibility>(listing?.visibility ?? "campus_only");
   const [files, setFiles] = useState<File[]>([]);
   const [questions, setQuestions] = useState<string[]>(proofQuestions.length ? proofQuestions : [""]);
   const [exactLat, setExactLat] = useState(listing?.exact_lat?.toString() ?? "");
@@ -99,6 +102,7 @@ export function ListingForm({
       model: optional("model"),
       event_date: draft.eventDate,
       zone_id: draft.zoneId,
+      visibility,
       exact_lat: draft.exactLat ? Number(draft.exactLat) : null,
       exact_lng: draft.exactLng ? Number(draft.exactLng) : null,
     };
@@ -116,6 +120,7 @@ export function ListingForm({
         model: payload.model,
         event_date: payload.event_date,
         zone_id: payload.zone_id,
+        visibility: payload.visibility,
         exact_lat: payload.exact_lat,
         exact_lng: payload.exact_lng,
       };
@@ -223,6 +228,13 @@ export function ListingForm({
 
       <fieldset className="form-section">
         <legend className="section-kicker">03 · Place</legend>
+        <label>Who should see this report?
+          <select name="visibility" value={visibility} onChange={(event) => setVisibility(event.target.value as ListingVisibility)}>
+            <option value="campus_only">People from this campus</option>
+            <option value="public">Everyone on CampusFind</option>
+          </select>
+        </label>
+        <p className="field-hint">Public reports are visible to every signed-in CampusFind member. Exact pins and contact details stay private.</p>
         <label>Closest campus zone<select name="zoneId" defaultValue={listing?.zone_id ?? ""} required><option value="" disabled>Choose a pinned place</option>{zones.map((zone) => <option key={zone.id} value={zone.id}>{zone.name}</option>)}</select></label>
         <p className="privacy-callout">The zone is public. The exact pin stays private to you until a later claim flow explicitly shares it.</p>
         <button className="location-button" type="button" onClick={useCurrentPosition}>Use my current position as the private pin</button>

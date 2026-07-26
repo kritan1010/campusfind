@@ -38,3 +38,14 @@ export async function addLoyolaAcademy() {
   }
   revalidatePath("/admin"); revalidatePath("/onboarding"); revalidatePath("/");
 }
+
+export async function decideReport(formData: FormData) {
+  const reportId = String(formData.get("reportId") ?? "");
+  const status = String(formData.get("status") ?? "");
+  const action = String(formData.get("action") ?? "") || null;
+  if (!reportId || !["open", "reviewing", "resolved", "dismissed"].includes(status)) throw new Error("Report details are required.");
+  const supabase = await adminClient();
+  const { error } = await supabase.rpc("decide_report", { p_report_id: reportId, p_status: status as "open" | "reviewing" | "resolved" | "dismissed", p_action: action, p_notes: null });
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin");
+}

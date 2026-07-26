@@ -13,7 +13,7 @@ export default async function OnboardingPage() {
   const [{ data: profile }, { data: colleges }] = await Promise.all([
     supabase
       .from("profiles")
-      .select("display_name, avatar_url, college_id")
+      .select("display_name, avatar_url, college_id, onboarding_completed_at")
       .eq("id", user.id)
       .single(),
     supabase
@@ -22,6 +22,7 @@ export default async function OnboardingPage() {
       .eq("status", "approved")
       .order("name"),
   ]);
+  if (profile?.onboarding_completed_at) redirect("/profile");
 
   return (
     <main className="onboarding-shell">

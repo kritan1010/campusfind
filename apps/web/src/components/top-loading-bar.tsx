@@ -11,12 +11,12 @@ export function TopLoadingBar() {
 
   useEffect(() => {
     // When path or params change, finish progress bar
-    setProgress(100);
+    const finish = window.setTimeout(() => setProgress(100), 0);
     const timer = setTimeout(() => {
       setLoading(false);
       setProgress(0);
     }, 300);
-    return () => clearTimeout(timer);
+    return () => { window.clearTimeout(finish); clearTimeout(timer); };
   }, [pathname, searchParams]);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export function TopLoadingBar() {
       const currentUrl = new URL(window.location.href);
       const targetUrl = new URL(href, window.location.href);
 
-      if (currentUrl.origin === targetUrl.origin && currentUrl.pathname !== targetUrl.pathname) {
+      if (currentUrl.origin === targetUrl.origin && (currentUrl.pathname !== targetUrl.pathname || currentUrl.search !== targetUrl.search)) {
         setLoading(true);
         setProgress(30);
       }

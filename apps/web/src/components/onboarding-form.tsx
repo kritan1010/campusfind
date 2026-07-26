@@ -20,6 +20,7 @@ type OnboardingFormProps = {
   initialAvatarUrl: string;
   initialCollegeId: string | null;
   initialDisplayName: string;
+  mode?: "onboarding" | "profile";
 };
 
 type Affiliation = "approved" | "independent" | "request";
@@ -29,6 +30,7 @@ export function OnboardingForm({
   initialAvatarUrl,
   initialCollegeId,
   initialDisplayName,
+  mode = "onboarding",
 }: OnboardingFormProps) {
   const router = useRouter();
   const [displayName, setDisplayName] = useState(initialDisplayName);
@@ -211,7 +213,7 @@ export function OnboardingForm({
 
       {error && <p className="form-error" role="alert">{error}</p>}
       <button className="primary-button" type="submit" disabled={pending}>
-        {pending ? "Pinning your profile…" : "Finish setup"}
+        {pending ? "Saving profile…" : mode === "profile" ? "Save profile" : "Finish setup"}
       </button>
     </form>
   );

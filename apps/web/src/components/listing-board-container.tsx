@@ -16,6 +16,7 @@ export function ListingBoardContainer({
   zoneId,
   from,
   to,
+  visibility,
   zones,
   cards,
   profile,
@@ -27,6 +28,7 @@ export function ListingBoardContainer({
   zoneId: string;
   from: string;
   to: string;
+  visibility: string;
   zones: Zone[];
   cards: ListingCardData[];
   profile?: { college_id: string | null; show_independent_posts: boolean } | null;
@@ -43,6 +45,7 @@ export function ListingBoardContainer({
       <section className="filter-ticket border-2 border-[var(--manila-dark)] bg-[var(--paper-bright)] p-5 shadow-md">
         <form method="get" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6 items-end">
           <input type="hidden" name="kind" value={kind} />
+          <input type="hidden" name="to" value={to} />
 
           <div className="lg:col-span-2">
             <label className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-[var(--muted-ink)]">
@@ -58,6 +61,16 @@ export function ListingBoardContainer({
             />
           </div>
 
+          <div>
+            <label className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-[var(--muted-ink)]">
+              <span>Audience</span>
+            </label>
+            <select name="visibility" defaultValue={visibility} className="mt-1 w-full border border-[var(--manila-dark)] bg-[var(--paper)] px-3 py-2 text-sm text-[var(--ink)] shadow-inner">
+              <option value="">All audiences</option>
+              <option value="campus_only">This campus</option>
+              <option value="public">Public CampusFind</option>
+            </select>
+          </div>
           <div>
             <label className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-[var(--muted-ink)]">
               <Tag className="h-3.5 w-3.5 text-[var(--manila-dark)]" />
