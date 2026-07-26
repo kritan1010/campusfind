@@ -380,7 +380,7 @@ input::placeholder { color: #9a907c; }
 .board-shell { margin: 0 auto; max-width: 90rem; padding: clamp(1.25rem, 4vw, 4rem); }
 .board-topbar { margin-bottom: clamp(2.5rem, 6vw, 5rem); }
 .board-nav { align-items: center; display: flex; gap: 1.3rem; }
-.board-nav a, .board-nav button { font-size: .76rem; text-decoration: none; }
+.board-nav a, .board-nav button { flex-shrink: 0; font-size: .76rem; text-decoration: none; white-space: nowrap; }
 
 .board-intro { align-items: end; display: flex; justify-content: space-between; margin-bottom: 2.5rem; }
 .board-intro .eyebrow, .form-page-heading .eyebrow { margin: 0 0 .75rem; }
@@ -515,6 +515,7 @@ input::placeholder { color: #9a907c; }
 .score-stamp { background: var(--found); color: white; font-family: var(--font-jetbrains), monospace; font-size: .68rem; padding: .35rem .5rem; }
 .case-share-action { display: flex; justify-content: flex-end; margin-bottom: 1rem; }
 .share-button { align-items: center; display: inline-flex; gap: .45rem; min-height: 2.7rem; }
+.icon-button { align-items: center; display: inline-flex !important; gap: .45rem; justify-content: center; }
 .share-preview-shell { align-items: center; background: var(--paper); display: flex; justify-content: center; min-height: 100vh; padding: 1.25rem; }
 .share-preview-card { background: var(--paper-bright); border: 1px solid var(--line); border-top: 7px solid var(--ink); box-shadow: var(--shadow); max-width: 38rem; padding: clamp(1.5rem, 5vw, 3.5rem); width: 100%; }
 .share-preview-card.lost { border-top-color: var(--lost); }
